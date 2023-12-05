@@ -1,0 +1,60 @@
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Page</title>
+
+    <script>
+        function handleCheckboxClick(checkbox) {
+            // 모든 체크박스를 언체크 상태로 변경
+            var checkboxes = document.getElementsByName("place_afterpick");
+            checkboxes.forEach(function (cb) {
+                if (cb !== checkbox) {
+                    cb.checked = false;
+                }
+            });
+        }
+    </script>
+    
+</head>
+<body>
+    <h1>추천 장소</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <ul>
+            {% for name in recommended_place %}
+                <li>
+                    <input type="checkbox" value="{{ name }}" name="place_afterpick" onclick="handleCheckboxClick(this)">
+                    {{ name }}
+                </li>
+            {% endfor %}
+            
+            {% if recommended_place1T %}
+                <li>
+                    <p>테마1 충족 장소</p>
+                </li>
+                {% for name in recommended_place1T %}
+                    <li>
+                        <input type="checkbox" value="{{ name }}" name="place_afterpick" onclick="handleCheckboxClick(this)">
+                        {{ name }}
+                    </li>
+                {% endfor %}
+            {% endif %}
+            
+            {% if recommended_place2T %}
+                <li>
+                    <p>테마2 충족 장소</p>
+                </li>
+                {% for name in recommended_place2T %}
+                    <li>
+                        <input type="checkbox" value="{{ name }}" name="place_afterpick" onclick="handleCheckboxClick(this)">
+                        {{ name }}
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+        <button type="submit">선택한 장소 확인</button>
+    </form>
+</body>
+</html>
