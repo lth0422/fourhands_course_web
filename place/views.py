@@ -68,9 +68,9 @@ def references(request):
             attribute13=row['야경&전망'],
             attribute14=row['테마파크'],
             attribute15=row['한강'],
-            attribute16=row['위도'],
-            attribute17=row['경도'],
-            attribute18=row['주소'],
+            latitude=row['위도'],
+            longitude=row['경도'],
+            address=row['주소'],
             # ... (one-hot 벡터에 해당하는 각 속성에 대한 필드 추가)
         )
 
@@ -89,7 +89,8 @@ def references(request):
             request.session['place_afterpick'] = place_afterpick
             return redirect('/place/afterpick')  # Redirect to references page
 
-        return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place})
+
+        return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place,'naver_map_api_key': 'hhiu54m7d5'})
 
 
     if len(selected_place_categories) == 2:
@@ -103,7 +104,7 @@ def references(request):
             request.session['place_afterpick'] = place_afterpick
             return redirect('/place/afterpick')  # Redirect to references page
 
-        return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place, 'recommended_place1T': recommended_place1T, 'recommended_place2T': recommended_place2T})
+        return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place, 'recommended_place1T': recommended_place1T, 'recommended_place2T': recommended_place2T,  'naver_map_api_key': 'hhiu54m7d5'})
 
 
 def afterpick(request):
@@ -113,7 +114,7 @@ def afterpick(request):
     selected_place_info = PlaceModel.objects.filter(name=place_afterpick).first()
 
     # 위도 및 경도를 템플릿으로 전달
-    return render(request, 'place/afterpick.html', {'place_afterpick': place_afterpick, 'latitude': selected_place_info.attribute16, 'longitude': selected_place_info.attribute17})
+    return render(request, 'place/afterpick.html', {'place_afterpick': place_afterpick, 'latitude': selected_place_info.latitude, 'longitude': selected_place_info.longitude})
 
 
 # Create your views here.

@@ -17,9 +17,9 @@ class PlaceModel(models.Model):
     attribute13 = models.BooleanField()
     attribute14 = models.BooleanField()
     attribute15 = models.BooleanField()
-    attribute16 = models.CharField(max_length=255)
-    attribute17 = models.CharField(max_length=255)
-    attribute18 = models.CharField(max_length=255)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    address = models.CharField(max_length=255)
 
     # ... (one-hot 벡터에 해당하는 각 속성에 대한 필드 추가)
 

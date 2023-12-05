@@ -1,12 +1,70 @@
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">   
-    <title>references</title>
+    <meta charset="UTF-8">
+    <title>네이버 지도 API 예제</title>
+    <style>
+        /* 맵을 표시할 영역의 크기를 지정합니다. */
+        #map {
+            width: 40%;
+            height: 400px;
+        }
 
+        /* 스타일을 버튼 안에 넣은 네모난 형태로 변경 */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rgb(31, 192, 192);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 125px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+    </style>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=hhiu54m7d5"></script>
 </head>
 <body>
     <h1>선택한 장소: {{ place_afterpick }}</h1>
     <p>위도: {{ latitude }}</p>
     <p>경도: {{ longitude }}</p>
+
+    <!-- 맵을 표시할 div 요소를 추가합니다. -->
+    <div id="map"></div>
+
+    <script>
+        // 네이버 지도 API 초기화
+        var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng({{ latitude }}, {{ longitude }}), // 초기 지도 중심 좌표
+            zoom: 15, // 초기 지도 확대 레벨
+            mapTypeId: naver.maps.MapTypeId.NORMAL // 일반 지도 타입
+        });
+
+        // 선택한 장소에 마커 추가
+        var marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng({{ latitude }}, {{ longitude }}),
+            map: map
+        });
+
+        // 마커 위에 정보창 추가
+        var infowindow = new naver.maps.InfoWindow({
+            content: '<h3>{{ place_afterpick }}</h3>' +
+                     '<p>위도: {{ latitude }}</p>' +
+                     '<p>경도: {{ longitude }}</p>'
+        });
+
+        naver.maps.Event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+        });
+    </script>
+
+    <!-- 위치를 하단으로 이동한 버튼들 -->
+    <div style="text-align: left; margin-top: 20px;">
+        <a href="javascript:history.back();" class="button">뒤로가기</a>
+        <a href="/restaurant/food_category/" class="button">음식 테마 고르기</a>
+    </div>
 </body>
 </html>

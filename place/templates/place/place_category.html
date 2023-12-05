@@ -1,6 +1,7 @@
+{%load static%}
 
 <head>
-    <meta charset="utf-8">   
+    <meta charset="utf-8">
     <title>checkbox</title>
 
 </head>
@@ -13,12 +14,16 @@
         alert('{{ error_message }}');
     </script>
     {% endif %}
-    
+
     <div class="form-check">
         <input type="checkbox" value = "거리&골목길"
                 id="street" name="place_categories">
         <label for= "street">거리&골목길</label>
     </div>
+
+    <img src="{% static 'img/road1.jpg' %}">
+    <img src="{% static 'img/road2.jpg' %}">
+    <img src="{% static 'img/road3.jpg' %}">
 
     <div class="form-check">
         <input type="checkbox" value = "건축물"
@@ -26,84 +31,139 @@
         <label for= "building">건축물</label>
     </div>
 
+    <img src="{% static 'img/building1.jpg' %}">
+    <img src="{% static 'img/building2.jpg' %}">
+    <img src="{% static 'img/building3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "공원"
                 id="park" name="place_categories">
         <label for= "park">공원</label>
     </div>
 
+    <img src="{% static 'img/park1.jpg' %}">
+    <img src="{% static 'img/park2.jpg' %}">
+    <img src="{% static 'img/park3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "광화문&종로"
                 id="GHMJR" name="place_categories">
         <label for= "GHMJR">광화문&종로</label>
     </div>
-    
+
+    <img src="{% static 'img/Gwanghwamun1.jpg' %}">
+    <img src="{% static 'img/Gwanghwamun2.jpg' %}">
+    <img src="{% static 'img/Gwanghwamun3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "궁궐"
                 id="palace" name="place_categories">
         <label for= "palace">궁궐</label>
     </div>
-    
+
+    <img src="{% static 'img/castle1.jpg' %}">
+    <img src="{% static 'img/castle2.jpg' %}">
+    <img src="{% static 'img/castle3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "다리"
                 id="bridge" name="place_categories">
         <label for= "bridge">다리</label>
     </div>
-    
+
+    <img src="{% static 'img/bridge1.jpg' %}">
+    <img src="{% static 'img/bridge2.jpg' %}">
+    <img src="{% static 'img/bridge3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "산"
                 id="mountain" name="place_categories">
         <label for= "mountain">산</label>
     </div>
-    
+
+    <img src="{% static 'img/mountain1.jpg' %}">
+    <img src="{% static 'img/mountain2.jpg' %}">
+    <img src="{% static 'img/mountain3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "서촌&북촌"
                 id="SCBC" name="place_categories">
         <label for= "SCBC">서촌&북촌</label>
     </div>
-    
+
+    <img src="{% static 'img/seochon1.jpg' %}">
+    <img src="{% static 'img/seochon2.jpg' %}">
+    <img src="{% static 'img/seochon3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "식물"
                 id="vegetal" name="place_categories">
         <label for= "vegetal">식물</label>
     </div>
-    
+
+    <img src="{% static 'img/plant1.jpg' %}">
+    <img src="{% static 'img/plant2.jpg' %}">
+    <img src="{% static 'img/plant3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "역사 문화 공간"
                 id="Historic" name="place_categories">
         <label for= "Historic">역사 문화 공간</label>
     </div>
-    
+
+    <img src="{% static 'img/history1.jpg' %}">
+    <img src="{% static 'img/history2.jpg' %}">
+    <img src="{% static 'img/history3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "자연산책로"
                 id="naturetrail" name="place_categories">
         <label for= "naturetrail">자연산책로</label>
     </div>
-    
+
+    <img src="{% static 'img/walk1.jpg' %}">
+    <img src="{% static 'img/walk2.jpg' %}">
+    <img src="{% static 'img/walk3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "캠퍼스"
                 id="campus" name="place_categories">
         <label for= "campus">캠퍼스</label>
     </div>
-    
+
+    <img src="{% static 'img/univ1.jpg' %}">
+    <img src="{% static 'img/univ2.jpg' %}">
+    <img src="{% static 'img/univ3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "야경&전망"
                 id="scene" name="place_categories">
         <label for= "scene">야경&전망</label>
     </div>
-    
+
+    <img src="{% static 'img/tower1.jpg' %}">
+    <img src="{% static 'img/tower2.jpg' %}">
+    <img src="{% static 'img/tower3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "테마파크"
                 id="themapark" name="place_categories">
         <label for= "themapark">테마파크</label>
     </div>
-    
+
+    <img src="{% static 'img/themepark1.jpg' %}">
+    <img src="{% static 'img/themepark2.jpg' %}">
+    <img src="{% static 'img/themepark3.jpg' %}">
+
     <div class="form-check">
         <input type="checkbox" value = "한강"
                 id="Hanriver" name="place_categories">
         <label for= "Hanriver">한강</label>
     </div>
 
+    <img src="{% static 'img/HangangPark1.jpg' %}">
+    <img src="{% static 'img/HangangPark2.jpg' %}">
+    <img src="{% static 'img/HangangPark3.jpg' %}">
 
     <button type = "submit">submit</button>
  </form>
