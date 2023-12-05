@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selected Restaurants</title>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{ naver_map_api_key }}"></script>
+</head>
+<body>
+    <h2>Restaurants in category: {{ selected_category }}</h2>
+
+    <div id="map" style="width:600px;height:400px;"></div>
+
+    <script>
+        var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng({{ restaurants.0.latitude }}, {{ restaurants.0.longitude }}),
+            zoom: 12
+        });
+
+<!--    // 현재 선택된 마커의 정보를 담는 변수-->
+        var selectedMarkerInfo = null;
+
+        {% for restaurant in restaurants %}
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng({{ restaurant.latitude }}, {{ restaurant.longitude }}),
+                map: map,
+                title: '{{ restaurant.name }}'
+            });
+
+<!--        // 마커를 클릭하면 정보 윈도우를 열어 음식점 정보를 표시-->
+            var infoWindow = new naver.maps.InfoWindow({
+                content: '<div>{{ restaurant.name }} - {{ restaurant.addr }}</div>'
+            });
+
+<!--        // 클로저 안에서 let을 사용하여 변수를 선언-->
+            (function(marker, infoWindow, restaurant) {
+                naver.maps.Event.addListener(marker, 'click', function() {
+<!--                // 기존에 선택된 마커가 있으면 정보 윈도우를 닫고 선택 변수 초기화-->
+                     if (selectedMarkerInfo) {
+                        selectedMarkerInfo.infoWindow.close();
+                        selectedMarkerInfo.buttons.forEach(function(button) {
+                            button.parentNode.removeChild(button);
+                        });
+                        selectedMarkerInfo = null;
+                    }
+
+                    infoWindow.open(map, marker);
+                    createButtons(restaurant);
+                });
+            })(marker, infoWindow, {{ restaurant|safe }});
+        {% endfor %}
+
+<!--        // 선택 버튼과 추가 버튼을 생성하는 함수-->
+        function createButtons(restaurant) {
+<!--        // 기존에 생성된 버튼이 있다면 삭제-->
+             var existingButtons = document.querySelectorAll('.mapButton');
+            existingButtons.forEach(function(button) {
+                button.parentNode.removeChild(button);
+            });
+<!--// 선택 버튼 생성-->
+            createButton('Select This Place', function() {
+                alert('You selected: ' + restaurant.name);
+            });
+
+<!--            // 즐겨찾기 버튼 생성-->
+            createButton('즐겨찾기', function() {
+                alert('Added to Favorites: ' + restaurant.name);
+            });
+
+<!--            // 경로 확인하기 버튼 생성-->
+            createButton('경로 확인하기', function() {
+                window.location.href = '/show_path/' + restaurant.name;
+            });
+        }
+
+<!--        // 버튼을 생성하는 함수-->
+        function createButton(text, onClick) {
+            var button = document.createElement('button');
+            button.className = 'mapButton';
+            button.innerText = text;
+            button.addEventListener('click', onClick);
+
+<!--            // 버튼을 body에 추가-->
+            document.body.appendChild(button);
+
+<!--            // 현재 선택된 마커의 정보에 버튼 추가-->
+            if (!selectedMarkerInfo) {
+                selectedMarkerInfo = {
+                    buttons: [button],
+                    infoWindow: infoWindow
+                };
+            } else {
+                selectedMarkerInfo.buttons.push(button);
+            }
+        }
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Category</title>
+</head>
+<body>
+    <h2>Select a category:</h2>
+
+    <form method="get" action="{% url 'restaurant:show_selected_restaurants' %}">
+        <label for="category">Select a category:</label>
+        <select id="category" name="category">
+            {% for category in all_categories %}
+                <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>{{ category }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Show Restaurants">
+    </form>
+
+</body>
+</html>

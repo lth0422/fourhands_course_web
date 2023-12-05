@@ -87,7 +87,7 @@ def references(request):
             print(place_afterpick)
 
             request.session['place_afterpick'] = place_afterpick
-            return redirect('/afterpick')  # Redirect to references page
+            return redirect('/place/afterpick')  # Redirect to references page
 
         return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place})
 
