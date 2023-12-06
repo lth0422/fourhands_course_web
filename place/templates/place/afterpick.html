@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>네이버 지도 API 예제</title>
+    <title>장소 정보</title>
     <style>
         /* 맵을 표시할 영역의 크기를 지정합니다. */
         #map {
@@ -29,8 +29,9 @@
 </head>
 <body>
     <h1>선택한 장소: {{ place_afterpick }}</h1>
-    <p>위도: {{ latitude }}</p>
-    <p>경도: {{ longitude }}</p>
+    <!-- 일단 주석 처리 했음! 굳이 보여줄 필요 없어서-->
+<!--    <p>위도: {{ latitude }}</p>-->
+<!--    <p>경도: {{ longitude }}</p>-->
 
     <!-- 맵을 표시할 div 요소를 추가합니다. -->
     <div id="map"></div>
@@ -64,7 +65,7 @@
     <!-- 위치를 하단으로 이동한 버튼들 -->
     <div style="text-align: left; margin-top: 20px;">
         <a href="javascript:history.back();" class="button">뒤로가기</a>
-        <a href="/restaurant/food_category/" class="button">음식 테마 고르기</a>
+        <a href="/restaurant/food_category/" class="button">음식 카테고리 고르기</a>
     </div>
 </body>
 </html>
