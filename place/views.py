@@ -112,9 +112,23 @@ def afterpick(request):
 
     # 선택한 장소의 위도 및 경도 정보 검색
     selected_place_info = PlaceModel.objects.filter(name=place_afterpick).first()
+    request.session['place_latitude'] = selected_place_info.latitude
+    request.session['place_longitude'] = selected_place_info.longitude
 
     # 위도 및 경도를 템플릿으로 전달
     return render(request, 'place/afterpick.html', {'place_afterpick': place_afterpick, 'latitude': selected_place_info.latitude, 'longitude': selected_place_info.longitude})
+
+
+# def course(request):
+#     place_course = request.session.get('place_afterpick')
+#
+#     # 선택한 장소의 위도 및 경도 정보 검색
+#     selected_place_info = PlaceModel.objects.filter(name=place_course).first()
+#
+#     # 위도 및 경도를 템플릿으로 전달
+#     return render(request, '../../restaurant/templates/restaurant/restaurant_list.html',
+#                   {'place_name': place_course, 'place_latitude': selected_place_info.latitude,
+#                    'place_longitude': selected_place_info.longitude})
 
 
 # Create your views here.
