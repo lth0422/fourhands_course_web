@@ -1,7 +1,12 @@
 from django.shortcuts import render
+from  haversine import haversine, Unit
 import pandas as pd
-from place.views import afterpick
+
 def show_selected_restaurants(request):
+    place_afterpick = request.session.get('place_afterpick')
+    place_latitude = request.session.get('place_latitude')
+    place_longitude = request.session.get('place_longitude')
+
     # 음식점 데이터를 직접 처리
     csv_path = 'restaurant/static/restaurant/Restaurant.csv'
     df = pd.read_csv(csv_path)
@@ -10,6 +15,12 @@ def show_selected_restaurants(request):
     selected_category = request.GET.get('category', all_categories[0])
 
     filtered_restaurants = df[df['category'] == selected_category]
+
+    # 거리 조절 위한 함수.
+    # for index, row in df.iterrows():
+    #     if abs(haversine((row['latitude'],row['longitude']),(place_latitude,place_longitude))) < 5 :
+
+
 
     restaurant_objects = []
     for _, row in filtered_restaurants.iterrows():
@@ -20,9 +31,9 @@ def show_selected_restaurants(request):
             'latitude': row['latitude'],
             'longitude': row['longitude']
         })
-    place_afterpick = request.session.get('place_afterpick')
-    place_latitude = request.session.get('place_latitude')
-    place_longitude = request.session.get('place_longitude')
+    # place_afterpick = request.session.get('place_afterpick')
+    # place_latitude = request.session.get('place_latitude')
+    # place_longitude = request.session.get('place_longitude')
 
     return render(request, 'restaurant/restaurant_list.html', {
         'restaurants': restaurant_objects,
