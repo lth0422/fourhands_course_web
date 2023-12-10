@@ -7,6 +7,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{ naver_map_api_key }}"></script>
+
+    <style>
+    .marker-dot {
+        width: 24px;
+        height: 24px;
+        background-color: green;
+        border-radius: 50%;
+    }
+    </style>
+
 </head>
 <body>
 
@@ -36,12 +46,13 @@
     <div id="map" style="width:800px;height:500px;"></div>
     <script>
         var map = new naver.maps.Map('map', {
-            center: new naver.maps.LatLng({{ restaurants.0.latitude }}, {{ restaurants.0.longitude }}),
+            center: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
             zoom: 15
         });
 
-<!--    // 현재 선택된 마커의 정보를 담는 변수-->
+        <!--    // 현재 선택된 마커의 정보를 담는 변수-->
         var selectedMarkerInfo = null;
+
 
         {% for restaurant in restaurants %}
             var marker = new naver.maps.Marker({
@@ -71,6 +82,50 @@
                     createButtons(restaurant);
                 });
             })(marker, infoWindow, {{ restaurant|safe }});
+
+
+             // 추가할 마커를 생성
+            var placeMarker = new naver.maps.Marker({
+                position: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+                map: map,
+                title: '{{ place_course }}',
+                icon: {
+                content: '<div class="marker-dot"></div>',
+                anchor: new naver.maps.Point(12, 12),
+                }
+            });
+
+
+            // 클로저 안에서 let을 사용하여 변수를 선언
+            (function (placeMarker) {
+                naver.maps.Event.addListener(placeMarker, 'click', function () {
+
+                    // 클릭한 마커의 정보를 나타내는 HTML 요소 생성
+                    var infoContent = '<div class="info-window">' +
+                                      '    <p>선택한 나들이 장소</p>' +
+                                      '    <h3>{{ place_course }}</h3>' +
+
+                                      '</div>';
+
+                    // 기존에 열린 정보창이 있다면 닫기
+                    if (selectedMarkerInfo) {
+                        selectedMarkerInfo.infoWindow.close();
+                    }
+
+                    // 정보창 열기
+                    var infoWindow = new naver.maps.InfoWindow({
+                        content: infoContent,
+                        backgroundColor: 'white',
+                        borderColor: 'green',
+                    });
+
+                    infoWindow.open(map, placeMarker);
+
+
+                });
+            })(placeMarker);
+
+
         {% endfor %}
 
 <!--        // 선택 버튼과 추가 버튼을 생성하는 함수-->
