@@ -104,7 +104,14 @@ def references(request):
             request.session['place_afterpick'] = place_afterpick
             return redirect('/place/afterpick')  # Redirect to references page
 
-        return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place, 'recommended_place1T': recommended_place1T, 'recommended_place2T': recommended_place2T,  'naver_map_api_key': 'hhiu54m7d5'})
+        return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place,
+                                                                                    'recommended_place1T': recommended_place1T,
+                                                                                    'recommended_place2T': recommended_place2T,
+                                                                                    'naver_map_api_key': 'hhiu54m7d5',
+                                                                                    'selected_place_category1': selected_place_categories[0],
+                                                                                    'selected_place_category2': selected_place_categories[1]
+
+                                                                                    })
 
 
 def afterpick(request):
