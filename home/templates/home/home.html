@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <title>home</title>
@@ -36,7 +37,7 @@
                 <p>by fourhands</p>
             </div>
         </div>
-<!--    <button type="button" onclick="location.href='place/place_category/'">get started</button>-->
+
     <header class="masthead">
             <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
                 <div class="d-flex justify-content-center">
@@ -46,6 +47,8 @@
                 </div>
             </div>
         </header>
+
+    <center><img src="{% static 'home/img/seoulmap.jpg' %}" style="width: 1440px; height: 810px;"></center>
 
 
 

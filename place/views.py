@@ -24,20 +24,18 @@ def place_category(request):
         selected_place_categories = request.POST.getlist('place_categories')
         print(selected_place_categories)
         # Save selected categories in session
-        if len(selected_place_categories) > 2:
+        if len(selected_place_categories) > 2 :
             error_message = "최대 2개의 테마를 선택할 수 있습니다. 다시 선택해주세요."
             return render(request, 'place/place_category.html', {'place_categories': place_categories, 'error_message': error_message})
-        else:
+        elif len(selected_place_categories) == 0:
+            error_message = "하나 이상 선택해야합니다. 다시 선택해주세요."
+            return render(request, 'place/place_category.html', {'place_categories': place_categories, 'error_message': error_message})
+        else :
             request.session['selected_place_categories'] = selected_place_categories
             return redirect('/place/references')  # Redirect to references page
 
     return render(request, 'place/place_category.html', {'place_categories': place_categories})
 
-# def references(request):
-#     # Retrieve selected categories from session
-#     selected_categories = request.session.get('selected_categories', [])
-
-#     return render(request, 'references.html', {'selected_categories': selected_categories})
 
 def references(request):
     # CSV 파일 경로 설정 (예: media 폴더 안에 있는 파일)
@@ -124,18 +122,6 @@ def afterpick(request):
 
     # 위도 및 경도를 템플릿으로 전달
     return render(request, 'place/afterpick.html', {'place_afterpick': place_afterpick, 'latitude': selected_place_info.latitude, 'longitude': selected_place_info.longitude})
-
-
-# def course(request):
-#     place_course = request.session.get('place_afterpick')
-#
-#     # 선택한 장소의 위도 및 경도 정보 검색
-#     selected_place_info = PlaceModel.objects.filter(name=place_course).first()
-#
-#     # 위도 및 경도를 템플릿으로 전달
-#     return render(request, '../../restaurant/templates/restaurant/restaurant_list.html',
-#                   {'place_name': place_course, 'place_latitude': selected_place_info.latitude,
-#                    'place_longitude': selected_place_info.longitude})
 
 
 # Create your views here.

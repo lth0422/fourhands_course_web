@@ -27,6 +27,31 @@
         .form-check input[type="checkbox"]:checked + label {
             background: #86d993;
         }
+
+        /* Additional CSS to remove bullets from list items */
+        ul.form-check {
+            list-style-type: none;
+            padding: 20px;
+        }
+
+        ul.form-check li {
+            margin-bottom: 20px;
+        }
+
+        #confirmButton {
+            font-size: 20px; /* Adjust the font size as needed */
+        }
+
+        #confirmButton:disabled {
+            display: none;
+        }
+
+        #confirmButtonContainer {
+            position: fixed;
+            bottom: 50%;
+            right: 200px;
+            transform: translateX(50%);
+        }
     </style>
 
     <script>
@@ -38,6 +63,10 @@
                     cb.checked = false;
                 }
             });
+
+            // 선택한 체크박스가 하나 이상인 경우 버튼 활성화
+            var confirmButton = document.getElementById("confirmButton");
+            confirmButton.disabled = document.querySelectorAll('input[name="place_afterpick"]:checked').length === 0;
         }
     </script>
 
@@ -102,7 +131,9 @@
                 {% endfor %}
             {% endif %}
         </ul>
-        <button type="submit" class="btn btn-success">선택한 장소 확인</button>
+        <div id="confirmButtonContainer">
+            <button type="submit" class="btn btn-success" id="confirmButton" disabled>선택한 장소 확인</button>
+        </div>
     </form>
     </center>
 

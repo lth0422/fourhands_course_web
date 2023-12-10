@@ -33,11 +33,11 @@
     </div>
 
     <center>
-    <div id="map" style="width:600px;height:400px;"></div>
+    <div id="map" style="width:800px;height:500px;"></div>
     <script>
         var map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng({{ restaurants.0.latitude }}, {{ restaurants.0.longitude }}),
-            zoom: 12
+            zoom: 15
         });
 
 <!--    // 현재 선택된 마커의 정보를 담는 변수-->
@@ -82,8 +82,8 @@
             });
 <!--// 선택 버튼 생성-->
             createButton('추가 정보 확인하기', function() {
-                window.location.href = 'https://map.naver.com/p/search/' + restaurant.name;
-
+                var url = 'https://map.naver.com/p/search/' + restaurant.name;
+                window.open(url, '_blank');
             });
 
 <!--            // 즐겨찾기 버튼 생성-->
@@ -93,10 +93,11 @@
 
 <!--            // 경로 확인하기 버튼 생성-->
             createButton('경로 확인하기', function() {
-
-                window.location.href = 'http://map.naver.com/index.nhn?slng={{place_longitude}}&slat={{place_latitude}}&stext={{place_course}}&elng='+ restaurant.longitude+'&elat=' +restaurant.latitude+'&pathType=0&showMap=true&etext=' + restaurant.name + '&menu=route';
+                var url = 'http://map.naver.com/index.nhn?slng={{place_longitude}}&slat={{place_latitude}}&stext={{place_course}}&elng=' + restaurant.longitude + '&elat=' + restaurant.latitude + '&pathType=0&showMap=true&etext=' + restaurant.name + '&menu=route';
+                window.open(url, '_blank');
             });
         }
+
 
 <!--        // 버튼을 생성하는 함수-->
         function createButton(text, onClick) {
