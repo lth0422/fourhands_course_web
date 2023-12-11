@@ -93,7 +93,7 @@ def references(request):
             print(place_afterpick)
 
             request.session['place_afterpick'] = place_afterpick
-            return redirect('/place/afterpick')  # Redirect to references page
+            return redirect('/place/afterpick')
 
 
         return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place,'naver_map_api_key': 'hhiu54m7d5'})
@@ -109,7 +109,7 @@ def references(request):
             place_afterpick = request.POST.get('place_afterpick')
             # Save selected categories in session
             request.session['place_afterpick'] = place_afterpick
-            return redirect('/place/afterpick')  # Redirect to references page
+            return redirect('/place/afterpick')
 
         # 랜더 함수를 통해 나들이 장소를 선택하는 페이지 전송, recommended_place.html에서 사용할 인자들 정의 및 전송
         return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place,
