@@ -22,4 +22,5 @@ urlpatterns = [
     path('place/', include("place.urls")),
     path('restaurant/', include("restaurant.urls")),
     path('', include("home.urls")),
+    path('common/', include('common.urls')),
 ]
