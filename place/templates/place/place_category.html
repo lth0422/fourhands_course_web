@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8">
     <title>장소 카테고리 선택</title>
+    <!-- 체크 박스 스타일 정의 -->
     <style>
         .form-check input[type="checkbox"] {
             display: none;
@@ -87,13 +88,14 @@
 
     <form  method="post" >
     {%csrf_token%}
-
+        <!-- 에러 메세지 출력 정의-->
         {% if error_message %}
         <script>
             alert('{{ error_message }}');
         </script>
         {% endif %}
 
+        <!-- 카테고리에 맞는 이미지 3개씩 화면에 출력, 체크 박스 클래스 정의-->
         <center>
         <table>
             <tr><th>
@@ -105,7 +107,6 @@
                     <input type="checkbox" value = "거리&골목길"
                         id="street" name="place_categories">
                     <label class="btn btn-success" for="street">거리&골목길</label>
-<!--                    <label for= "street">거리&골목길</label>-->
                 </div>
             </th>
 
@@ -120,7 +121,6 @@
                     <input type="checkbox" value = "건축물"
                             id="building" name="place_categories">
                     <label class="btn btn-success" for="building">건축물</label>
-<!--                    <label for= "building">건축물</label>-->
                 </div>
             </th>
 
@@ -133,7 +133,6 @@
                     <input type="checkbox" value = "공원"
                             id="park" name="place_categories">
                     <label class="btn btn-success" for="park">공원</label>
-<!--                    <label for= "park">공원</label>-->
                 </div>
             </th></tr>
 
@@ -147,7 +146,6 @@
                     <input type="checkbox" value = "광화문&종로"
                             id="GHMJR" name="place_categories">
                     <label class="btn btn-success" for="GHMJR">광화문&종로</label>
-<!--                    <label for= "GHMJR">광화문&종로</label>-->
                 </div>
             </th>
 
@@ -161,8 +159,6 @@
                     <input type="checkbox" value = "궁궐"
                             id="palace" name="place_categories">
                     <label class="btn btn-success" for="palace">궁궐</label>
-
-<!--                    <label for= "palace">궁궐</label>-->
                 </div>
             </th>
 
@@ -175,8 +171,6 @@
                     <input type="checkbox" value = "다리"
                             id="bridge" name="place_categories">
                     <label class="btn btn-success" for="bridge">다리</label>
-
-<!--                    <label for= "bridge">다리</label>-->
                 </div>
             </th></tr>
 
@@ -189,8 +183,6 @@
                     <input type="checkbox" value = "산"
                             id="mountain" name="place_categories">
                     <label class="btn btn-success" for="mountain">산</label>
-
-<!--                    <label for= "mountain">산</label>-->
                 </div>
             </th>
 
@@ -204,8 +196,6 @@
                     <input type="checkbox" value = "서촌&북촌"
                             id="SCBC" name="place_categories">
                     <label class="btn btn-success" for="SCBC">서촌&북촌</label>
-
-<!--                    <label for= "SCBC">서촌&북촌</label>-->
                 </div>
             </th>
 
@@ -218,8 +208,6 @@
                     <input type="checkbox" value = "식물"
                             id="vegetal" name="place_categories">
                     <label class="btn btn-success" for="vegetal">식물</label>
-
-<!--                    <label for= "vegetal">식물</label>-->
                 </div>
             </th></tr>
 
@@ -232,8 +220,6 @@
                     <input type="checkbox" value = "역사 문화 공간"
                             id="Historic" name="place_categories">
                     <label class="btn btn-success" for="Historic">역사 문화 공간</label>
-
-<!--                    <label for= "Historic">역사 문화 공간</label>-->
                 </div>
             </th>
 
@@ -247,7 +233,6 @@
                     <input type="checkbox" value = "자연산책로"
                             id="naturetrail" name="place_categories">
                     <label class="btn btn-success" for="naturetrail">자연산책로</label>
-<!--                    <label for= "naturetrail">자연산책로</label>-->
                 </div>
             </th>
 
@@ -260,8 +245,6 @@
                     <input type="checkbox" value = "캠퍼스"
                             id="campus" name="place_categories">
                     <label class="btn btn-success" for="campus">캠퍼스</label>
-
-<!--                    <label for= "campus">캠퍼스</label>-->
                 </div>
             </th></tr>
 
@@ -274,8 +257,6 @@
                     <input type="checkbox" value = "야경&전망"
                             id="scene" name="place_categories">
                     <label class="btn btn-success" for="scene">야경&전망</label>
-
-<!--                    <label for= "scene">야경&전망</label>-->
                 </div>
             </th>
 
@@ -288,8 +269,6 @@
                     <input type="checkbox" value = "테마파크"
                             id="themapark" name="place_categories">
                     <label class="btn btn-success" for="themapark">테마파크</label>
-
-<!--                    <label for= "themapark">테마파크</label>-->
                 </div>
             </th>
 
@@ -302,13 +281,13 @@
                     <input type="checkbox" value = "한강"
                             id="Hanriver" name="place_categories">
                     <label class="btn btn-success" for="Hanriver">한강</label>
-<!--                    <label for= "Hanriver">한강</label>-->
                 </div>
 
             </th></tr>
 
             <tr>
                 <th></th>
+                <!-- 장소 카테고리 선택 완료 버튼 생성-->
                 <th><button class="btn btn-success" type="submit">장소 카테고리 선택 완료</button></th>
             </tr>
 

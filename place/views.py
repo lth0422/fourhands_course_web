@@ -2,6 +2,7 @@ import pandas as pd
 from django.shortcuts import render, redirect
 from .models import PlaceModel
 
+# 장소 카테고리 선택을 정의하는 함수
 def place_category(request):
     place_categories = ['거리&골목길',
                         '건축물',
@@ -23,20 +24,26 @@ def place_category(request):
     if request.method == 'POST':
         selected_place_categories = request.POST.getlist('place_categories')
         print(selected_place_categories)
-        # Save selected categories in session
+
+        # 선택된 카테고리들을 세션에 저장
+        # 만약 선택한 카테고리가 2개를 넘으면 에러 메세지 출력
         if len(selected_place_categories) > 2 :
             error_message = "최대 2개의 테마를 선택할 수 있습니다. 다시 선택해주세요."
             return render(request, 'place/place_category.html', {'place_categories': place_categories, 'error_message': error_message})
+        # 만약 선택한 카테고리가 0개일 때 에러 메세지 출력
         elif len(selected_place_categories) == 0:
             error_message = "하나 이상 선택해야합니다. 다시 선택해주세요."
             return render(request, 'place/place_category.html', {'place_categories': place_categories, 'error_message': error_message})
+        # 만약 선택한 카테고리가 1개이거나 2개일 때 정상적으로 세션에 카테고리 저장
         else :
             request.session['selected_place_categories'] = selected_place_categories
-            return redirect('/place/references')  # Redirect to references page
+            return redirect('/place/references')  # 나들이 장소를 선택하는 html 파일로 redirect 실행
 
+    # 렌더 함수를 통해 장소 카테고리 페이지 리턴
     return render(request, 'place/place_category.html', {'place_categories': place_categories})
 
 
+# 카테고리를 참조하여 나들이 장소를 출력하는 함수정의
 def references(request):
     # CSV 파일 경로 설정 (예: media 폴더 안에 있는 파일)
     csv_file_path = 'place/static/place/PlaceList.csv'
@@ -75,8 +82,9 @@ def references(request):
     selected_place_categories = request.session.get('selected_place_categories', [])
     print(selected_place_categories)
 
-    # Filter DataFrame based on selected categories
+    # 선택된 카테고리들을 기반으로 데이터 프레임 필터링
 
+    # 만약 선택한 카테고리가 1개일 때
     if len(selected_place_categories) == 1:
         recommended_place = df[df[selected_place_categories[0]] == 1]['출사 장소 리스트'].tolist()
 
@@ -90,8 +98,9 @@ def references(request):
 
         return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place,'naver_map_api_key': 'hhiu54m7d5'})
 
-
+    # 만약 선택한 카테고리가 2개일 때
     if len(selected_place_categories) == 2:
+        # 2개의 카테고리에 모두 해당 or 1개의 카테고리만 해당하는 나들이 장소 출력
         recommended_place = df[(df[selected_place_categories[0]] == 1)&(df[selected_place_categories[1]] == 1)]['출사 장소 리스트'].tolist()
         recommended_place1T = df[(df[selected_place_categories[0]] == 1)&(df[selected_place_categories[1]] != 1)]['출사 장소 리스트'].tolist()
         recommended_place2T = df[(df[selected_place_categories[0]] != 1)&(df[selected_place_categories[1]] == 1)]['출사 장소 리스트'].tolist()
@@ -102,6 +111,7 @@ def references(request):
             request.session['place_afterpick'] = place_afterpick
             return redirect('/place/afterpick')  # Redirect to references page
 
+        # 랜더 함수를 통해 나들이 장소를 선택하는 페이지 전송, recommended_place.html에서 사용할 인자들 정의 및 전송
         return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place,
                                                                                     'recommended_place1T': recommended_place1T,
                                                                                     'recommended_place2T': recommended_place2T,
@@ -111,7 +121,7 @@ def references(request):
 
                                                                                     })
 
-
+# 나들이 장소를 선택한 후 추가 정보를 확인하는 것을 정의하는 함수
 def afterpick(request):
     place_afterpick = request.session.get('place_afterpick')
 

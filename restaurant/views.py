@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from  haversine import haversine, Unit
 import pandas as pd
 
+# 선택한 음식 카테고리에 맞는 음식점들을 데이터베이스에서 가져오는 함수 정의
 def show_selected_restaurants(request):
     place_afterpick = request.session.get('place_afterpick')
     place_latitude = request.session.get('place_latitude')
@@ -10,18 +10,14 @@ def show_selected_restaurants(request):
     # 음식점 데이터를 직접 처리
     csv_path = 'restaurant/static/restaurant/Restaurant.csv'
     df = pd.read_csv(csv_path)
-
+    
+    # 음식 카테고리들 중 선택한 카테고리와 일치하는 음식점들 가져오기
     all_categories = ['한식', '일식', '중식', '양식', '카페', '아시아음식', '뷔페', '패스트푸드', '기타']
     selected_category = request.GET.get('category', all_categories[0])
-
+    
     filtered_restaurants = df[df['category'] == selected_category]
-
-    # 거리 조절 위한 함수.
-    # for index, row in df.iterrows():
-    #     if abs(haversine((row['latitude'],row['longitude']),(place_latitude,place_longitude))) < 5 :
-
-
-
+    
+    # 음식점 데이터베이스의 형식에 맞춰 정보 가져오기
     restaurant_objects = []
     for _, row in filtered_restaurants.iterrows():
         restaurant_objects.append({
@@ -31,10 +27,7 @@ def show_selected_restaurants(request):
             'latitude': row['latitude'],
             'longitude': row['longitude']
         })
-    # place_afterpick = request.session.get('place_afterpick')
-    # place_latitude = request.session.get('place_latitude')
-    # place_longitude = request.session.get('place_longitude')
-
+    # 랜더 함수를 통해 인자들 restaurant_list.html로 보내기 (음식점의 이름, 위도, 경도, 주소, 네이버 api key, 나들이 장소의 이름, 위도 경도)
     return render(request, 'restaurant/restaurant_list.html', {
         'restaurants': restaurant_objects,
         'all_categories': all_categories,
@@ -43,15 +36,14 @@ def show_selected_restaurants(request):
         'place_course': place_afterpick,
         'place_latitude': place_latitude,
         'place_longitude':  place_longitude
-        # 'place_course': afterpick(request).place_afterpick,
-        # 'place_latitude': afterpick(request).place_latitude,
-        # 'place_longitude': afterpick(request).place_longitude,
     })
 
+# 음식 카테고리 선택하는 함수 정의
 def food_category(request):
     all_categories = ['한식', '일식', '중식', '양식', '카페', '아시아음식', '뷔페', '패스트푸드', '기타']
     selected_category = request.GET.get('category', all_categories[0])
 
+    # 랜더 함수를 통해 인자를 food_category.html로 보내기
     return render(request, 'restaurant/food_category.html', {
         'all_categories': all_categories,
         'selected_category': selected_category,

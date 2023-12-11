@@ -8,6 +8,7 @@
 
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{ naver_map_api_key }}"></script>
 
+    <!-- 최종적으로 선택한 나들이 장소를 표시해주는 마커의 스타일 정의 -->
     <style>
     .marker-dot {
         width: 24px;
@@ -49,18 +50,20 @@
             </div>
     </div>
 
+    <!-- 맛집 지도와 지도에 표시되는 마커들, 버튼 생성 함수 정의 -->
     <center>
     <div id="map" style="width:800px;height:500px;"></div>
     <script>
+        // 네이버 API 지도 초기값 정의
         var map = new naver.maps.Map('map', {
-            center: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+            center: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}), // 선택한 나들이 장소의 위치(마커)를 중심으로 설정
             zoom: 15
         });
 
         // 현재 선택된 마커의 정보를 담는 변수
         var selectedMarkerInfo = null;
 
-
+        // 선택한 음식 카테고리에 맞는 식당들을 지도위의 마커로 표시, 마커를 클릭하면 음식점의 정보를 출력
         {% for restaurant in restaurants %}
             var marker = new naver.maps.Marker({
                 position: new naver.maps.LatLng({{ restaurant.latitude }}, {{ restaurant.longitude }}),
@@ -91,7 +94,7 @@
             })(marker, infoWindow, {{ restaurant|safe }});
 
 
-             // 추가할 마커를 생성
+             // 나들이 장소 마커를 생성
             var placeMarker = new naver.maps.Marker({
                 position: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
                 map: map,
@@ -135,7 +138,7 @@
 
         {% endfor %}
 
-        // 선택 버튼과 추가 버튼을 생성하는 함수
+        // 선택 버튼과 추가 기능 버튼을 생성하는 함수
         function createButtons(restaurant) {
              // 기존에 생성된 버튼이 있다면 삭제
              var existingButtons = document.querySelectorAll('.mapButton');
@@ -148,11 +151,6 @@
                 window.open(url, '_blank');
             });
 
-            // 즐겨찾기 버튼 생성
-            //createButton('즐겨찾기', function() {
-                //alert('Added to Favorites: ' + restaurant.name);
-            //});
-
             // 경로 확인하기 버튼 생성
             createButton('경로 확인하기', function() {
                 var url = 'http://map.naver.com/index.nhn?slng={{place_longitude}}&slat={{place_latitude}}&stext={{place_course}}&elng=' + restaurant.longitude + '&elat=' + restaurant.latitude + '&pathType=0&showMap=true&etext=' + restaurant.name + '&menu=route';
@@ -161,7 +159,7 @@
         }
 
 
-        // 버튼을 생성하는 함수
+        // 버튼을 생성하는 함수 정의
         function createButton(text, onClick) {
             var button = document.createElement('button');
             button.style.cssText = "position: relative; left: 40%; margin-right: 10px;";
