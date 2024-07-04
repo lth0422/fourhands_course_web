@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>출사 장소 추천</title>
+</head>
+<body>
+    <h1>출사 장소를 추천해 드립니다!</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">추천 받기</button>
+    </form>
+</body>
+</html>

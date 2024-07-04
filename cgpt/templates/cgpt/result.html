@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>추천 결과</title>
+</head>
+<body>
+    <h1>출사 장소 추천 결과</h1>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% else %}
+        <p>추천 이유: {{ recommend_reason }}</p>
+        <p>추천 키워드: {{ keywords_string }}</p>
+    {% endif %}
+    <a href="{% url 'recommend_keyword' %}">다시 추천 받기</a>
+</body>
+</html>
