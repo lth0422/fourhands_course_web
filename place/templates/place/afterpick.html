@@ -1,117 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+
+{% block title %}장소 최종 선택{% endblock %}
+
+{% block content %}
 {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <title>장소 정보</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-    <style>
-        /* 맵과 이미지를 가로로 나열하기 위한 Flexbox 스타일 */
-        .container-map {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--{% load static %}-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>장소 정보</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>-->
 
-        /* 맵과 이미지의 각각의 스타일 */
-        #map,
-        .container-image {
-            width: 600px;
-            height: 400px;
-            margin: 10px; /* 여백 추가 */
-        }
+<style>
+    /* 맵과 이미지를 가로로 나열하기 위한 Flexbox 스타일 */
+    .container-map {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
-        /* 위치를 하단으로 이동한 버튼들을 가운데 정렬하기 위한 스타일 */
-        .button-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+    /* 맵과 이미지의 각각의 스타일 */
+    #map,
+    .container-image {
+        width: 600px;
+        height: 400px;
+        margin: 10px; /* 여백 추가 */
+    }
 
-        .button-container .btn {
-            margin: 0 10px; /* 각 버튼 사이 여백 조절 */
-        }
-    </style>
+    /* 위치를 하단으로 이동한 버튼들을 가운데 정렬하기 위한 스타일 */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .button-container .btn {
+        margin: 0 10px; /* 각 버튼 사이 여백 조절 */
+    }
+</style>
 
     <script type="text/javascript" src="http://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=hhiu54m7d5"></script>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="http://43.203.67.158:8000/">Photo - walk & eat</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="http://43.203.67.158:8000/">Home</a></li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:logout' %}">Log out({{ user.username }})</a></li>
-                    {% else %}
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:login' %}">Log in</a></li>
-                    {% endif %}
-                    {% if not user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:signup' %}">Sign up</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+<!--</head>-->
+<!--<body>-->
+<!--    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+<!--        <div class="container">-->
+<!--            <a class="navbar-brand" href="http://43.203.67.158:8000/">Photo - walk & eat</a>-->
+<!--            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>-->
+<!--            <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">-->
+<!--                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="http://43.203.67.158:8000/">Home</a></li>-->
+<!--                    {% if user.is_authenticated %}-->
+<!--                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:logout' %}">Log out({{ user.username }})</a></li>-->
+<!--                    {% else %}-->
+<!--                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:login' %}">Log in</a></li>-->
+<!--                    {% endif %}-->
+<!--                    {% if not user.is_authenticated %}-->
+<!--                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:signup' %}">Sign up</a></li>-->
+<!--                    {% endif %}-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </nav>-->
 
-    <div class="container">
-        <div class="text-center mt-5">
-            <h1>선택한 장소</h1>
-            <p class="lead">{{ place_afterpick }}</p>
-        </div>
+<div class="container">
+    <div class="text-center mt-5">
+        <h1>선택한 장소</h1>
+        <p class="lead">{{ place_afterpick }}</p>
     </div>
+</div>
 
-    <!-- 맵과 이미지를 표시할 div 요소를 추가 -->
-    <div class="container-map">
-        <!-- 맵을 표시할 div 요소 -->
-        <div id="map"></div>
+<!-- 맵과 이미지를 표시할 div 요소를 추가 -->
+<div class="container-map">
+    <!-- 맵을 표시할 div 요소 -->
+    <div id="map"></div>
 
-        <!-- 이미지를 표시할 div 요소 -->
-        <div class="container-image">
-            {% with image_path="place/img/"|add:place_afterpick|add:".jpg" %}
-                <img src="{% static image_path %}" alt="{{ place_afterpick }} Image" class="img-fluid" style="width: 600px; height: 400px;">
-            {% endwith %}
-        </div>
+    <!-- 이미지를 표시할 div 요소 -->
+    <div class="container-image">
+        {% with image_path="place/img/"|add:place_afterpick|add:".jpg" %}
+            <img src="{% static image_path %}" alt="{{ place_afterpick }} Image" class="img-fluid" style="width: 600px; height: 400px;">
+        {% endwith %}
     </div>
+</div>
 
-    <!-- 위치를 하단으로 이동한 버튼들 -->
-    <div class="button-container">
-        <a href="javascript:history.back();" class="btn btn-warning">다시 고를래요</a>    <!-- 나들이 장소를 선택하는 화면으로 돌아가기 -->
-        <a href="/restaurant/food_category/" class="btn btn-success">여기로 할래요</a>    <!-- 나들이 장소 최종 선택 -->
-        <a href="https://map.naver.com/p/search/{{ place_afterpick }}" class="btn btn-primary" target="_blank">추가 정보 확인하기 </a>  <!-- 선택한 나들의 장소에 대한 추가 정보 확인, 네이버 지도 링크 -->
+<!-- 위치를 하단으로 이동한 버튼들 -->
+<div class="button-container">
+    <a href="javascript:history.back();" class="btn btn-warning">다시 고를래요</a>    <!-- 나들이 장소를 선택하는 화면으로 돌아가기 -->
+    <a href="/restaurant/food_category/" class="btn btn-success">여기로 할래요</a>    <!-- 나들이 장소 최종 선택 -->
+    <a href="https://map.naver.com/p/search/{{ place_afterpick }}" class="btn btn-primary" target="_blank">추가 정보 확인하기 </a>  <!-- 선택한 나들의 장소에 대한 추가 정보 확인, 네이버 지도 링크 -->
 
-    </div>
+</div>
 
-    <script>
-        // 네이버 지도 API 초기화
-        var map = new naver.maps.Map('map', {
-            center: new naver.maps.LatLng({{ latitude }}, {{ longitude }}), // 초기 지도 중심 좌표
-            zoom: 15, // 초기 지도 확대 레벨
-            mapTypeId: naver.maps.MapTypeId.NORMAL // 일반 지도 타입
-        });
+<script>
+    // 네이버 지도 API 초기화
+    var map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng({{ latitude }}, {{ longitude }}), // 초기 지도 중심 좌표
+        zoom: 15, // 초기 지도 확대 레벨
+        mapTypeId: naver.maps.MapTypeId.NORMAL // 일반 지도 타입
+    });
 
-        // 선택한 장소에 마커 추가
-        var marker = new naver.maps.Marker({
-            position: new naver.maps.LatLng({{ latitude }}, {{ longitude }}),
-            map: map
-        });
+    // 선택한 장소에 마커 추가
+    var marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng({{ latitude }}, {{ longitude }}),
+        map: map
+    });
 
-        // 마커 위에 정보창 추가
-        var infowindow = new naver.maps.InfoWindow({
-            content: '<h3>{{ place_afterpick }}</h3>' +
-                     '<p>위도: {{ latitude }}</p>' +
-                     '<p>경도: {{ longitude }}</p>'
-        });
+    // 마커 위에 정보창 추가
+    var infowindow = new naver.maps.InfoWindow({
+        content: '<h3>{{ place_afterpick }}</h3>' +
+                 '<p>위도: {{ latitude }}</p>' +
+                 '<p>경도: {{ longitude }}</p>'
+    });
 
-        naver.maps.Event.addListener(marker, 'click', function() {
-            infowindow.open(map, marker);
-        });
-    </script>
+    naver.maps.Event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+    });
+</script>
 
-</body>
-</html>
+<!--</body>-->
+<!--</html>-->
+
+{% endblock %}
