@@ -61,7 +61,8 @@ ROOT_URLCONF = "course_web_prj.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        # "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -123,6 +124,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
+
+# 정적 파일들이 위치하는 디렉토리를 설정합니다.
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+# 정적 파일을 수집할 디렉토리
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # 로그인 성공후 이동하는 URL
 LOGIN_REDIRECT_URL = '/'

@@ -1,101 +1,69 @@
-<!DOCTYPE html>
-<html lang="ko">
-{%load static%}
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <title>장소 카테고리 선택</title>
-    <!-- 체크 박스 스타일 정의 -->
-    <style>
-        .form-check input[type="checkbox"] {
-            display: none;
-        }
+{% block title %}장소 카테고리 선택{% endblock %}
 
-        .form-check label {
-            cursor: pointer;
-            padding: 8px 16px;
-            display: inline-block;
-            background: #888;
-            color: #fff;
-            font-family: sans-serif;
-            border-radius: 4px;
-            margin-bottom: 8px;
-            transition: background 0.2s ease;
-        }
-
-        .form-check input[type="checkbox"]:checked + label {
-            background: #86d993;
-        }
+{% block content %}
+{% load static %}
 
 
-        table th {
-            text-align: center;
-            padding: 30px;
-        }
+<style>
+    .form-check input[type="checkbox"] {
+        display: none;
+    }
 
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: rgb(33, 135, 218);
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 70px;
-            cursor: pointer;
-            border-radius: 8px;
-        }
+    .form-check label {
+        cursor: pointer;
+        padding: 8px 16px;
+        display: inline-block;
+        background: #888;
+        color: #fff;
+        font-family: sans-serif;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        transition: background 0.2s ease;
+    }
 
+    .form-check input[type="checkbox"]:checked + label {
+        background: #86d993;
+    }
 
-    </style>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    table th {
+        text-align: center;
+        padding: 30px;
+    }
 
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: rgb(33, 135, 218);
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 70px;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+</style>
 
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="http://43.203.67.158:8000/">Photo - walk & eat</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="http://43.203.67.158:8000/">Home</a></li>
-                        {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:logout' %}">Log out({{ user.username }})</a></li>
-                        {% else %}
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:login' %}">Log in</a></li>
-                        {% endif %}
-                        {% if not user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:signup' %}">Sign up</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
+<div class="container">
+    <div class="text-center mt-5">
+        <h1>장소 카테고리를 선택하세요.</h1>
+        <p class="lead">최대 2개까지 선택 가능합니다.</p>
+    </div>
+</div>
 
+<form method="post">
+    {% csrf_token %}
+    <!-- 에러 메세지 출력 정의 -->
+    {% if error_message %}
+    <script>
+        alert('{{ error_message }}');
+    </script>
+    {% endif %}
 
-    <div class="container">
-            <div class="text-center mt-5">
-                <h1>장소 카테고리를 선택하세요.</h1>
-                <p class="lead">최대 2개까지 선택 가능합니다.</p>
-
-            </div>
-        </div>
-
-
-
-    <form  method="post" >
-    {%csrf_token%}
-        <!-- 에러 메세지 출력 정의-->
-        {% if error_message %}
-        <script>
-            alert('{{ error_message }}');
-        </script>
-        {% endif %}
-
-        <!-- 카테고리에 맞는 이미지 3개씩 화면에 출력, 체크 박스 클래스 정의-->
+    <!-- 카테고리에 맞는 이미지 3개씩 화면에 출력, 체크 박스 클래스 정의-->
         <center>
         <table>
             <tr><th>
@@ -291,8 +259,306 @@
                 <th><button class="btn btn-success" type="submit">장소 카테고리 선택 완료</button></th>
             </tr>
 
-            </center>
-    </form>
-</body>
+    </center>
+</form>
+{% endblock %}
 
-</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko">-->
+<!--{%load static%}-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <title>장소 카테고리 선택</title>-->
+<!--    &lt;!&ndash; 체크 박스 스타일 정의 &ndash;&gt;-->
+<!--    <style>-->
+<!--        .form-check input[type="checkbox"] {-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .form-check label {-->
+<!--            cursor: pointer;-->
+<!--            padding: 8px 16px;-->
+<!--            display: inline-block;-->
+<!--            background: #888;-->
+<!--            color: #fff;-->
+<!--            font-family: sans-serif;-->
+<!--            border-radius: 4px;-->
+<!--            margin-bottom: 8px;-->
+<!--            transition: background 0.2s ease;-->
+<!--        }-->
+
+<!--        .form-check input[type="checkbox"]:checked + label {-->
+<!--            background: #86d993;-->
+<!--        }-->
+
+
+<!--        table th {-->
+<!--            text-align: center;-->
+<!--            padding: 30px;-->
+<!--        }-->
+
+<!--        .button {-->
+<!--            display: inline-block;-->
+<!--            padding: 10px 20px;-->
+<!--            background-color: rgb(33, 135, 218);-->
+<!--            color: white;-->
+<!--            text-align: center;-->
+<!--            text-decoration: none;-->
+<!--            display: inline-block;-->
+<!--            font-size: 16px;-->
+<!--            margin: 4px 70px;-->
+<!--            cursor: pointer;-->
+<!--            border-radius: 8px;-->
+<!--        }-->
+
+
+<!--    </style>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>-->
+
+
+<!--</head>-->
+<!--<body>-->
+<!--    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+<!--            <div class="container">-->
+<!--                <a class="navbar-brand" href="http://43.203.67.158:8000/">Photo - walk & eat</a>-->
+<!--                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>-->
+<!--                <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">-->
+<!--                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="http://43.203.67.158:8000/">Home</a></li>-->
+<!--                        {% if user.is_authenticated %}-->
+<!--                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:logout' %}">Log out({{ user.username }})</a></li>-->
+<!--                        {% else %}-->
+<!--                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:login' %}">Log in</a></li>-->
+<!--                        {% endif %}-->
+<!--                        {% if not user.is_authenticated %}-->
+<!--                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:signup' %}">Sign up</a></li>-->
+<!--                        {% endif %}-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </nav>-->
+
+
+<!--    <div class="container">-->
+<!--            <div class="text-center mt-5">-->
+<!--                <h1>장소 카테고리를 선택하세요.</h1>-->
+<!--                <p class="lead">최대 2개까지 선택 가능합니다.</p>-->
+
+<!--            </div>-->
+<!--        </div>-->
+
+
+
+<!--    <form  method="post" >-->
+<!--    {%csrf_token%}-->
+<!--        &lt;!&ndash; 에러 메세지 출력 정의&ndash;&gt;-->
+<!--        {% if error_message %}-->
+<!--        <script>-->
+<!--            alert('{{ error_message }}');-->
+<!--        </script>-->
+<!--        {% endif %}-->
+
+<!--        &lt;!&ndash; 카테고리에 맞는 이미지 3개씩 화면에 출력, 체크 박스 클래스 정의&ndash;&gt;-->
+<!--        <center>-->
+<!--        <table>-->
+<!--            <tr><th>-->
+<!--                <img src="{% static 'place/img/road1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/road2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/road3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "거리&골목길"-->
+<!--                        id="street" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="street">거리&골목길</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/building1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/building2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/building3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "건축물"-->
+<!--                            id="building" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="building">건축물</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/park1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/park2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/park3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "공원"-->
+<!--                            id="park" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="park">공원</label>-->
+<!--                </div>-->
+<!--            </th></tr>-->
+
+
+<!--            <tr><th>-->
+<!--                <img src="{% static 'place/img/Gwanghwamun1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/Gwanghwamun2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/Gwanghwamun3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "광화문&종로"-->
+<!--                            id="GHMJR" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="GHMJR">광화문&종로</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/castle1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/castle2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/castle3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "궁궐"-->
+<!--                            id="palace" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="palace">궁궐</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/bridge1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/bridge2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/bridge3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "다리"-->
+<!--                            id="bridge" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="bridge">다리</label>-->
+<!--                </div>-->
+<!--            </th></tr>-->
+
+<!--            <tr><th>-->
+<!--                <img src="{% static 'place/img/mountain1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/mountain2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/mountain3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "산"-->
+<!--                            id="mountain" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="mountain">산</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/seochon1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/seochon2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/seochon3.jpg' %}">-->
+
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "서촌&북촌"-->
+<!--                            id="SCBC" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="SCBC">서촌&북촌</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/plant1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/plant2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/plant3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "식물"-->
+<!--                            id="vegetal" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="vegetal">식물</label>-->
+<!--                </div>-->
+<!--            </th></tr>-->
+
+<!--            <tr><th>-->
+<!--                <img src="{% static 'place/img/history1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/history2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/history3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "역사 문화 공간"-->
+<!--                            id="Historic" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="Historic">역사 문화 공간</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/walk1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/walk2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/walk3.jpg' %}">-->
+
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "자연산책로"-->
+<!--                            id="naturetrail" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="naturetrail">자연산책로</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/univ1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/univ2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/univ3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "캠퍼스"-->
+<!--                            id="campus" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="campus">캠퍼스</label>-->
+<!--                </div>-->
+<!--            </th></tr>-->
+
+<!--            <tr><th>-->
+<!--                <img src="{% static 'place/img/tower1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/tower2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/tower3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "야경&전망"-->
+<!--                            id="scene" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="scene">야경&전망</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/themepark1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/themepark2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/themepark3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "테마파크"-->
+<!--                            id="themapark" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="themapark">테마파크</label>-->
+<!--                </div>-->
+<!--            </th>-->
+
+<!--            <th>-->
+<!--                <img src="{% static 'place/img/HangangPark1.jpg' %}">-->
+<!--                <img src="{% static 'place/img/HangangPark2.jpg' %}">-->
+<!--                <img src="{% static 'place/img/HangangPark3.jpg' %}">-->
+
+<!--                <div class="form-check">-->
+<!--                    <input type="checkbox" value = "한강"-->
+<!--                            id="Hanriver" name="place_categories">-->
+<!--                    <label class="btn btn-success" for="Hanriver">한강</label>-->
+<!--                </div>-->
+
+<!--            </th></tr>-->
+
+<!--            <tr>-->
+<!--                <th></th>-->
+<!--                &lt;!&ndash; 장소 카테고리 선택 완료 버튼 생성&ndash;&gt;-->
+<!--                <th><button class="btn btn-success" type="submit">장소 카테고리 선택 완료</button></th>-->
+<!--            </tr>-->
+
+<!--            </center>-->
+<!--    </form>-->
+<!--</body>-->
+
+<!--</html>-->
