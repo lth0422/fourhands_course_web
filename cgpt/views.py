@@ -19,7 +19,7 @@ assistant = client.beta.assistants.create(
     The recommended keywords must be included in the following list:\
     ['거리&골목길', '건축물', '공원', '궁궐', '광화문&종로', '다리', '산', '서촌&북촌', '식물', '역사 문화 공간', '자연산책로', '캠퍼스', '야경&전망', '테마파크', '한강']\
     """,
-  model="gpt-3.5-turbo",
+  model="gpt-4o",
 )
 
 example_conversations = [
@@ -57,84 +57,78 @@ example_conversations = [
     },
 ]
 
-thread = client.beta.threads.create()
+def index(request):
+    form = Userform()
+    return render(request, 'cgpt/index.html', {'form': form})
 
 def recommend_keyword(request):
   if request.method == 'POST':
-    form = Userform(request.POST)
-    if form.is_valid():
-      user_input = form.cleaned_data['user_input']
-      run = client.beta.threads.runs.create_and_poll(
-        thread_id=thread.id,
-        assistant_id=assistant.id,
-        instructions=f"""\
-            keywords: ['거리&골목길', '건축물', '공원', '궁궐', '광화문&종로', '다리', '산', '서촌&북촌', '식물', '역사 문화 공간', '자연산책로', '캠퍼스', '야경&전망', '테마파크', '한강']
-            Example 1:
-            Input: Mood/Preference - '{example_conversations[0]['input']}'
-            Output: {example_conversations[0]['output']}
-            
-            Example 2:
-            Input: Mood/Preference - '{example_conversations[1]['input']}'
-            Output: {example_conversations[1]['output']}
+    user_input = request.POST.get('user_input')
+    thread = client.beta.threads.create()
+    run = client.beta.threads.runs.create_and_poll(
+      thread_id=thread.id,
+      assistant_id=assistant.id,
+      instructions=f"""\
+        keywords: ['거리&골목길', '건축물', '공원', '궁궐', '광화문&종로', '다리', '산', '서촌&북촌', '식물', '역사 문화 공간', '자연산책로', '캠퍼스', '야경&전망', '테마파크', '한강']
+        Example 1:
+        Input: Mood/Preference - '{example_conversations[0]['input']}'
+        Output: {example_conversations[0]['output']}
+        
+        Example 2:
+        Input: Mood/Preference - '{example_conversations[1]['input']}'
+        Output: {example_conversations[1]['output']}
 
-            Example 3:
-            Input: Mood/Preference - '{example_conversations[2]['input']}'
-            Output: {example_conversations[3]['output']}
+        Example 3:
+        Input: Mood/Preference - '{example_conversations[2]['input']}'
+        Output: {example_conversations[3]['output']}
 
-            Example 4:
-            Input: Mood/Preference - '{example_conversations[3]['input']}'
-            Output: {example_conversations[3]['output']}
+        Example 4:
+        Input: Mood/Preference - '{example_conversations[3]['input']}'
+        Output: {example_conversations[3]['output']}
 
-            Example 5:
-            Input: Mood/Preference - '{example_conversations[4]['input']}'
-            Output: {example_conversations[4]['output']}
-            
-            Example 6:
-            Input: Mood/Preference - '{example_conversations[5]['input']}'
-            Output: {example_conversations[5]['output']}
-            
-            Example 7:
-            Input: Mood/Preference - '{example_conversations[6]['input']}'
-            Output: {example_conversations[6]['output']}
+        Example 5:
+        Input: Mood/Preference - '{example_conversations[4]['input']}'
+        Output: {example_conversations[4]['output']}
+        
+        Example 6:
+        Input: Mood/Preference - '{example_conversations[5]['input']}'
+        Output: {example_conversations[5]['output']}
+        
+        Example 7:
+        Input: Mood/Preference - '{example_conversations[6]['input']}'
+        Output: {example_conversations[6]['output']}
 
-            Example 8:
-            Input: Mood/Preference - '{example_conversations[7]['input']}'
-            Output: {example_conversations[7]['output']}          
-            
-            You have to respond in Korean:
-            Input: Mood/Preference - '{user_input}'
-            Output: 
-        """,
+        Example 8:
+        Input: Mood/Preference - '{example_conversations[7]['input']}'
+        Output: {example_conversations[7]['output']}          
+        
+        You have to respond in Korean:
+        Input: Mood/Preference - '{user_input}'
+        Output: 
+      """,
     )
-  
-      if run.status == 'completed': 
-        # 가장 최근의 메시지만 가져옵니다.
-        message = client.beta.threads.messages.list(thread_id=thread.id, order="desc", limit=1)
-        if message.data:
-          content_block = message.data[0].content[0]  # 가장 최근의 메시지의 첫 번째 content block
-          if content_block.type == 'text':
-            try:
-              recommend_reason, keywords_string = content_block.text.value.split('@')
-              return render(request, 'cgpt/result.html', {
-                'recommend_reason': recommend_reason,
-                'keywords_string' : keywords_string,
-              })
-            except ValueError:
-              return render(request, 'cgpt/result.html',{
-                'error': f"Invalid Response: {content_block.text.value}"
-                })
-          return render(request, 'cgpt/result.html', {
-            'error': "No valid response received from assistant"
+    
+  if run.status == 'completed': 
+    message = client.beta.threads.messages.list(thread_id=thread.id, order="desc", limit=1)
+    if message.data:
+      content_block = message.data[0].content[0]
+      if content_block.type == 'text':
+        try:
+          recommend_reason, keywords_string = content_block.text.value.split('@')
+          return JsonResponse({
+            'recommend_reason': recommend_reason,
+            'keywords_string': keywords_string,
+          })
+        except ValueError:
+          return JsonResponse({
+              'error': f"Invalid Response: {content_block.text.value}"
             })
-      else:
-        return render(request, 'cgpt/result.html', {
-          'error': f"Run Status: {run.status}, Details: {run}"
+      return JsonResponse({
+        'error': "No valid response received from assistant"
         })
-      
     else:
-      return render(request, 'cgpt/index.html', {'form': form})
-    
+      return JsonResponse({
+        'error': f"Run Status: {run.status}, Details: {run}"
+        })
   else:
-    form = Userform()
-    return render(request, 'cgpt/index.html',{'form':form})
-    
+    return JsonResponse({'error': 'Invalid request method'})
