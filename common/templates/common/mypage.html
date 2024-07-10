@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>마이페이지</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Home - Photo Walk & Eat{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="text-center mt-5">
+    <p class="lead">{{user.username}}의 마이페이지에 오신 것을 환영합니다.</p>
+    <p>by fourhands</p>
+</div>
+
+{% endblock %}
