@@ -1,0 +1,8 @@
+# openai api 이용 방법
+
+1. pip install python-dotenv
+2. pip install openai
+3. 프로젝트 루트 디렉토리에 .env 파일 생성
+4. .env 파일에 다음과 같이 작성:
+    OPENAI_API_KEY=sk-... (OPENAI_API_KEY는 우리 팀 api 키 입력)
+5. python manage.py runserver

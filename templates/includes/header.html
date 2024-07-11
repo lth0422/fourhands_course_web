@@ -2,15 +2,16 @@
     <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
         <div class="d-flex justify-content-center">
             <div class="text-center">
-                <!-- 로그인을 했다면 시작 버튼과 로그아웃 버튼 생성 -->
+                <!-- 로그인을 했다면 시작 버튼, 로그아웃 버튼 생성 -->
                 {% if user.is_authenticated %}
-                <a class="btn btn-success" href="{% url 'place:place_category' %}">Get Started</a>
-                <a class="btn btn-warning" href="{% url 'common:logout' %}">Log out ({{ user.username }})</a>
+                <a class="btn btn-success" href="{% url 'place:place_category' %}">시작하기</a>
+                <a class="btn btn-warning" href="{% url 'common:logout' %}">로그아웃 ({{ user.username }})</a>
 
-                <!-- 로그인을 안했다면 로그인 버튼과 회원가입 버튼 생성 -->
+                <!-- 로그인을 안했다면 시작 버튼, 로그인 버튼, 회원가입 버튼 생성 -->
                 {% else %}
-                <a class="btn btn-success" href="{% url 'common:login' %}">Log in</a>
-                <a class="btn btn-primary" href="{% url 'common:signup' %}">Sign up</a>
+                <a class="btn btn-success" href="{% url 'place:place_category' %}">시작하기</a>
+                <a class="btn btn-success" href="{% url 'common:login' %}">로그인</a>
+                <a class="btn btn-primary" href="{% url 'common:signup' %}">회원가입</a>
                 {% endif %}
             </div>
         </div>
