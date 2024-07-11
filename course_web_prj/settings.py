@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "restaurant",
     "home",
     "common.apps.CommonConfig",
+    "cgpt"
 ]
 
 MIDDLEWARE = [
