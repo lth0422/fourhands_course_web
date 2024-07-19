@@ -36,13 +36,13 @@
     background: #86d993;
 }
 
-/* Additional CSS to remove bullets from list items */
+/* 리스트 스타일 제거 추가 CSS */
 ul.form-check {
     list-style-type: none;
     padding: 20px;
     position: absolute; /* 절대 위치 지정 */
     top: 200px; /* 위에서 20px만큼 떨어진 위치 */
-    left: 400px; /* 왼쪽에서 20px만큼 떨어진 위치 */
+    left: 350px; /* 왼쪽에서 20px만큼 떨어진 위치 */
 }
 
 ul.form-check li {
@@ -50,7 +50,7 @@ ul.form-check li {
 }
 
 #confirmButton {
-    font-size: 20px; /* Adjust the font size as needed */
+    font-size: 20px; /* 필요에 따라 글꼴 크기 조정 */
 }
 
 #confirmButton:disabled {
@@ -62,6 +62,20 @@ ul.form-check li {
     bottom: 50%;
     right: 200px;
     transform: translateX(50%);
+}
+
+/* 이미지 컨테이너 스타일 수정 */
+#imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 이미지를 수직 가운데 정렬 */
+    margin-top: 20px; /* 필요에 따라 여백 조정 */
+}
+
+#cameraImage, #spoonImage {
+    width: 300px;
+    height: 300px;
+    margin: 10px; /* 이미지 사이의 간격 설정 */
 }
 </style>
 
@@ -79,9 +93,15 @@ ul.form-check li {
 <ul class="form-check">
     <li>
         <input class="form-check-input" type="checkbox" id="reverseCheckbox">
-        <label class="form-check-label" for="reverseCheckbox">밥선</label>
+        <label class="form-check-label" for="reverseCheckbox">밥 먼저 먹을래요</label>
     </li>
 </ul>
+
+<!-- 이미지 -->
+<div id="imageContainer">
+    <img id="cameraImage" src="{% static 'restaurant/img/camera.png' %}">
+    <img id="spoonImage" src="{% static 'restaurant/img/spoon.png' %}">
+</div>
 
 <script>
     var map = new naver.maps.Map('map', {
@@ -162,6 +182,9 @@ ul.form-check li {
             window.open(url, '_blank');
         });
 
+        // 지도에 점선 경로 그리기
+        drawDashedPath({ lat: parseFloat(restaurant.latitude), lng: parseFloat(restaurant.longitude) }, { lat: parseFloat('{{place_latitude}}'), lng: parseFloat('{{place_longitude}}') });
+
         createButton('경로 확인하기', function() {
             var checkbox = document.getElementById('reverseCheckbox');
             var s_lng, s_lat, s_text, e_lng, e_lat, e_text;
@@ -185,8 +208,6 @@ ul.form-check li {
             var url = 'http://map.naver.com/index.nhn?slng=' + s_lng + '&slat=' + s_lat + '&stext=' + s_text + '&elng=' + e_lng + '&elat=' + e_lat + '&pathType=0&showMap=true&etext=' + e_text + '&menu=route';
             window.open(url, '_blank');
 
-            // 지도에 점선 경로 그리기
-            drawDashedPath({ lat: parseFloat(s_lat), lng: parseFloat(s_lng) }, { lat: parseFloat(e_lat), lng: parseFloat(e_lng) });
         });
     }
 
@@ -230,6 +251,34 @@ ul.form-check li {
             strokeDashArray: [1, 1] // 점선의 간격 설정
         });
     }
+
+    // JavaScript로 이미지 위치 조정
+    document.addEventListener('DOMContentLoaded', function() {
+        var reverseCheckbox = document.getElementById('reverseCheckbox');
+        var cameraImage = document.getElementById('cameraImage');
+        var spoonImage = document.getElementById('spoonImage');
+
+        reverseCheckbox.addEventListener('change', function() {
+            if (reverseCheckbox.checked) {
+                // 체크박스가 체크되면 숟가락 이미지를 왼쪽에, 카메라 이미지를 오른쪽에 표시
+                cameraImage.style.order = '2'; // cameraImage를 뒤로 보냄
+                spoonImage.style.order = '1'; // spoonImage를 앞으로 가져옴
+            } else {
+                // 체크박스가 체크되지 않으면 카메라 이미지를 왼쪽에, 숟가락 이미지를 오른쪽에 표시
+                cameraImage.style.order = '1'; // cameraImage를 앞으로 가져옴
+                spoonImage.style.order = '2'; // spoonImage를 뒤로 보냄
+            }
+        });
+
+        // 페이지 로드 시 초기 상태 반영
+        if (reverseCheckbox.checked) {
+            cameraImage.style.order = '2'; // cameraImage를 뒤로 보냄
+            spoonImage.style.order = '1'; // spoonImage를 앞으로 가져옴
+        } else {
+            cameraImage.style.order = '1'; // cameraImage를 앞으로 가져옴
+            spoonImage.style.order = '2'; // spoonImage를 뒤로 보냄
+        }
+    });
 </script>
 </center>
 {% endblock %}
