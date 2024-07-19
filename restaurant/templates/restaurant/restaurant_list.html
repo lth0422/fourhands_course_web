@@ -188,6 +188,13 @@ ul.form-check li {
             // 지도에 점선 경로 그리기
             drawDashedPath({ lat: parseFloat(s_lat), lng: parseFloat(s_lng) }, { lat: parseFloat(e_lat), lng: parseFloat(e_lng) });
         });
+
+         {% if user.is_authenticated %}
+        createButton('저장', function() {
+            var url = "{% url 'restaurant:save_restaurant' 0 %}".replace(0, restaurant.id);
+            window.location.href = url;
+        });
+        {% endif %}
     }
 
     function createButton(text, onClick) {

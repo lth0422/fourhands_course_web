@@ -6,9 +6,25 @@
 {% load static %}
 
 <div class="text-center mt-5">
-    <p class="lead">{{user.username}}의 마이페이지에 오신 것을 환영합니다.</p>
-    <p>by fourhands</p>
-    <p class="lead">나의 일정 확인</p>
+    <p class="lead">{{ user.username }}의 마이페이지에 오신 것을 환영합니다.</p>
+</div>
+
+<div class="container mt-5">
+    <h2>저장된 식당 목록</h2>
+    <ul class="list-group">
+        {% for saved_restaurant in saved_restaurants %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{% url 'restaurant:show_selected_restaurant' saved_restaurant.restaurant.id %}?place_course={{ saved_restaurant.place_course }}&place_latitude={{ saved_restaurant.place_latitude }}&place_longitude={{ saved_restaurant.place_longitude }}">
+                    출사 장소: {{ saved_restaurant.place_course }} - 식당: {{ saved_restaurant.restaurant.name }}
+                </a>
+                <!-- 삭제 버튼 추가 -->
+                <form action="{% url 'restaurant:delete_saved_restaurant' saved_restaurant.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
 </div>
 
 {% endblock %}
