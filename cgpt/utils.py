@@ -98,7 +98,7 @@ def create_thread_and_run(user_input):
         
         You have to respond in Korean:
         Input: Mood/Preference - '{user_input}'
-        Output: 
+        Output:
       """,
     )
     return run, thread.id
