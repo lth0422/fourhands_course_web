@@ -105,6 +105,7 @@ def create_thread_and_run(user_input):
 
 def get_latest_message(thread_id):
     message = client.beta.threads.messages.list(thread_id=thread_id, order="desc", limit=1)
+    print(message)
     if message.data:
         content_block = message.data[0].content[0]
         if content_block.type == 'text':
