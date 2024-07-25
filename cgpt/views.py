@@ -4,10 +4,8 @@ from django.http import JsonResponse
 from .forms import Userform
 from .utils import create_thread_and_run, get_latest_message
 
-VALID_KEYWORDS = [
-  '거리&골목길', '건축물', '공원', '궁궐', '광화문&종로', '다리', '산', '서촌&북촌', '식물', 
-  '역사 문화 공간', '자연산책로', '캠퍼스', '야경&전망', '테마파크', '한강'
-]
+VALID_KEYWORDS = ['거리&골목길', '건축물', '공원', '궁궐', '광화문&종로', '다리', '산', '서촌&북촌', '식물', 
+  '역사 문화 공간', '자연산책로', '캠퍼스', '야경&전망', '테마파크', '한강']
 
 def cgpt(request):
   form = Userform()
@@ -48,9 +46,13 @@ def recommend_keyword(request):
       if not filtered_keywords or len(filtered_keywords) == 0:
         return handle_error(recommend_reason)
 
+      # 필터링된 키워드 리스트를 사용하여 버튼 HTML 생성
+      buttons_html = ''.join([f'<button type="button">{keyword}</button>' for keyword in filtered_keywords])
+
       return JsonResponse({
           'recommend_reason': recommend_reason,
           'keywords_string': filtered_keywords,
+          'buttons_html': buttons_html  # 버튼 HTML을 응답에 추가
       })
     except ValueError:
       return handle_error(latest_message)

@@ -55,7 +55,7 @@ def references(request):
 
 
     # DataFrame을 순회하며 Django 모델에 데이터 저장
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         PlaceModel.objects.create(
             name=row['출사 장소 리스트'],
             attribute1=row['거리&골목길'],
@@ -132,6 +132,3 @@ def afterpick(request):
 
     # 위도 및 경도를 템플릿으로 전달
     return render(request, 'place/afterpick.html', {'place_afterpick': place_afterpick, 'latitude': selected_place_info.latitude, 'longitude': selected_place_info.longitude})
-
-
-# Create your views here.

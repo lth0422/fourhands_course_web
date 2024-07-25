@@ -23,14 +23,16 @@
             margin-bottom: 20px;
             padding: 10px;
             border-radius: 10px;
+            word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
         }
         .chat-bubble.user {
             background-color: #007bff;
             color: white;
-            text-align: right;
+            text-align: left; /* 텍스트를 왼쪽 정렬 */
         }
         .chat-bubble.bot {
             background-color: #e9ecef;
+            text-align: left; /* 텍스트를 왼쪽 정렬 */
         }
         .chat-bubble.typing {
             background-color: #e9ecef;
@@ -67,6 +69,19 @@
             50%, 100% {
                 background-color: #fff;
             }
+        }
+        .keyword-button {
+            margin: 5px;
+            border: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .keyword-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -132,7 +147,21 @@
                 if (data.error) {
                     botBubble.innerHTML = `<p>${data.error}</p>`;
                 } else {
-                    botBubble.innerHTML = `<p>추천 이유: ${data.recommend_reason}</p><p>추천 키워드: ${data.keywords_string}</p>`;
+                    botBubble.innerHTML = `<p>${data.recommend_reason}</p>`;
+                    if (data.buttons_html) {
+                        let buttonsContainer = document.createElement('div');
+                        buttonsContainer.innerHTML = data.buttons_html;
+
+                        // Apply keyword-button class to each button
+                        buttonsContainer.querySelectorAll('button').forEach(button => {
+                            button.className = 'keyword-button';
+                            button.addEventListener('click', function() {
+                                alert(`"${button.innerText}" 버튼이 눌렸습니다.`);
+                            });
+                        });
+
+                        botBubble.appendChild(buttonsContainer);
+                    }
                 }
                 document.getElementById('chat-box').appendChild(botBubble);
                 document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
