@@ -38,13 +38,7 @@
 
 <div class="button-container">
     <button class="category-button" onclick="window.location.href='{% url "place:place_category" %}'">카테고리 선택하기</button>
-    <button class="recommendation-button" onclick="getRecommendation()">챗봇에게 추천받기</button>
+    <button class="recommendation-button" onclick="window.location.href='{% url "cgpt:cgpt" %}'">챗봇에게 추천받기</button>
 </div>
-
-<script>
-    function getRecommendation() {
-        alert('챗봇에게 추천받기 버튼이 클릭되었습니다.');
-    }
-</script>
 
 {% endblock %}

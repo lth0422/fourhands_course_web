@@ -106,7 +106,7 @@
             document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
 
             // AJAX request
-            fetch("{% url 'recommend_keyword' %}", {
+            fetch("{% url 'cgpt:recommend_keyword' %}", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

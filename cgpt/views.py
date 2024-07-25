@@ -57,9 +57,9 @@ example_conversations = [
     },
 ]
 
-def index(request):
+def cgpt(request):
     form = Userform()
-    return render(request, 'cgpt/index.html', {'form': form})
+    return render(request, 'cgpt/cgpt.html', {'form': form})
 
 def recommend_keyword(request):
   if request.method == 'POST':
