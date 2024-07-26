@@ -14,9 +14,12 @@
     <ul class="list-group">
         {% for saved_restaurant in saved_restaurants %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{% url 'restaurant:show_selected_restaurant' saved_restaurant.restaurant.id %}?place_course={{ saved_restaurant.place_course }}&place_latitude={{ saved_restaurant.place_latitude }}&place_longitude={{ saved_restaurant.place_longitude }}">
-                    출사 장소: {{ saved_restaurant.place_course }} - 식당: {{ saved_restaurant.restaurant.name }}
-                </a>
+                <div class="d-flex align-items-center">
+                    <img src="{% static 'place/img/' %}{{ saved_restaurant.place_course }}.jpg" alt="{{ saved_restaurant.place_course }}" class="img-thumbnail" style="width: 200px; height: 200px; object-fit: cover; margin-right: 15px;">
+                    <a href="{% url 'restaurant:show_selected_restaurant' saved_restaurant.restaurant.id %}?place_course={{ saved_restaurant.place_course }}&place_latitude={{ saved_restaurant.place_latitude }}&place_longitude={{ saved_restaurant.place_longitude }}">
+                        출사 장소: {{ saved_restaurant.place_course }} - 식당: {{ saved_restaurant.restaurant.name }}
+                    </a>
+                </div>
                 <!-- 삭제 버튼 추가 -->
                 <form action="{% url 'restaurant:delete_saved_restaurant' saved_restaurant.id %}" method="post" style="display:inline;">
                     {% csrf_token %}
