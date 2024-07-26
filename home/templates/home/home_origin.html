@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Photo Walk & Eat{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="text-center mt-5">
+    <h1>출사 나들이 코스 추천 웹</h1>
+    <p class="lead">로그인 후 원하는 장소, 음식점을 선택하고 네이버 지도를 통해 경로를 볼 수 있습니다.</p>
+    <p>by fourhands</p>
+</div>
+
+{% include 'includes/header.html' %}
+
+<center><img src="{% static 'home/img/seoulmap.jpg' %}" style="width: 1440px; height: 810px;"></center>
+{% endblock %}
+

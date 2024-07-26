@@ -1,0 +1,15 @@
+// 
+// root.scss
+//
+
+:root,
+[data-bs-theme="light"] {
+  --#{$prefix}font-serif: #{inspect($font-family-serif)};
+}
+
+@if $enable-dark-mode {
+  @include color-mode(dark, true) {
+    --#{$prefix}light: #{$light-dark};
+    --#{$prefix}light-rgb: #{to-rgb($light-dark)};
+  }
+}

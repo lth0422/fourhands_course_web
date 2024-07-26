@@ -1,0 +1,36 @@
+//
+// nav.scss
+//
+
+.nav-link {
+  --#{$prefix}nav-link-active-color: #{$nav-link-active-color};
+  @include text-xs(900);
+}
+
+// General
+
+.nav:not(.nav-tabs):not(.nav-pills) .nav-link {
+  position: relative;
+}
+
+.nav:not(.nav-tabs, .nav-pills) .nav-link::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: var(--#{$prefix}nav-link-padding-x);
+  right: var(--#{$prefix}nav-link-padding-x);
+  height: calc(var(--#{$prefix}border-width) * 3);
+  background-color: $primary;
+  transform: translateY(.5rem);
+  opacity: 0;
+  transition: all .1s;
+}
+
+.nav:not(.nav-tabs, .nav-pills) .nav-link.active {
+  color: var(--#{$prefix}nav-link-active-color);
+}
+
+.nav:not(.nav-tabs, .nav-pills) .nav-link.active::after {
+  transform: translateY(0);
+  opacity: 1;
+}

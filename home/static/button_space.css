@@ -1,0 +1,9 @@
+/* btn_space.css */
+.btn-custom-spacing {
+    margin-right: 20px; /* 원하는 마진 크기로 설정 */
+    margin-bottom: 10px; /* 필요한 경우 하단 마진도 추가 */
+  }
+
+.btn-custom-spacing:last-child {
+  margin-right: 0; /* 마지막 버튼은 오른쪽 마진 제거 */
+}

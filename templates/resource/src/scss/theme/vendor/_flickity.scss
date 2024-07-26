@@ -1,0 +1,70 @@
+//
+// flickity.scss
+//
+
+// Viewport
+
+.flickity-viewport-visible .flickity-viewport {
+  overflow: visible;
+}
+
+// Dots 
+
+.flickity-page-dots {
+  position: static;
+  margin-top: map-get($spacers, 5);
+}
+
+.flickity-page-dot {
+  margin-left: .25rem;
+  margin-right: .25rem;
+  opacity: 1;
+  background-color: var(--#{$prefix}light);
+  box-shadow: 0 0 !important;
+
+  &.is-selected {
+    background-color: $primary;
+  }
+}
+
+// Buttons
+
+.flickity-prev-next-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--#{$prefix}light);
+  color: var(--#{$prefix}emphasis-color);
+  opacity: 1;
+
+  &:focus, &:active {
+    opacity: 1;
+  }
+
+  &[disabled] {
+    visibility: hidden;
+  }
+
+  @if ($enable-transitions) {
+    transition: $transition-base;
+    transition-property: background-color, color;
+  }
+}
+
+.flickity-prev-next-button:hover {
+  background-color: $primary;
+  color: $white;
+}
+
+.flickity-prev-next-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.flickity-prev-next-button > .flickity-button-icon {
+  position: static;
+  width: 1rem;
+  height: 1rem;
+}

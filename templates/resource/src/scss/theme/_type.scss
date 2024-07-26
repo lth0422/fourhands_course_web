@@ -1,0 +1,32 @@
+//
+// type.scss
+//
+
+// Text
+
+.text-xs {
+  @include text-xs;
+}
+
+// Divider
+
+.hr-sm {
+  width: 2rem;
+}
+
+.hr-sm:not([size]) {
+  border-top-width: calc(var(--#{$prefix}border-width) * 3);
+}
+
+// Blockquote
+
+.blockquote > p {
+
+  &::before {
+    content: open-quote;
+  }
+
+  &::after {
+    content: close-quote;
+  }
+}

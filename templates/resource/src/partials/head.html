@@ -1,0 +1,49 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="{{webRoot}}/assets/favicon/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="{{webRoot}}/assets/favicon/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="{{webRoot}}/assets/favicon/favicon-16x16.png" />
+<link rel="manifest" href="{{webRoot}}/assets/favicon/manifest.json" />
+<link rel="mask-icon" href="{{webRoot}}/assets/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+<link rel="shortcut icon" href="{{webRoot}}/assets/favicon/favicon.ico" />
+<meta name="msapplication-config" content="{{webRoot}}/assets/favicon/browserconfig.xml" />
+<meta name="theme-color" content="#ffffff" />
+
+<!-- Libs CSS -->
+<link rel="stylesheet" href="{{webRoot}}/assets/css/libs.bundle.css" />
+
+<!-- Theme CSS -->
+<link rel="stylesheet" href="{{webRoot}}/assets/css/theme.bundle.css" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Map -->
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" />
+
+<!-- 
+  Color mode switch
+  - For demonstration purposes only
+  - If you do not have the possibility to store user preferences on the backend, I highly recommend switching to a media query implementation: https://getbootstrap.com/docs/5.3/customize/color-modes/#building-with-sass
+-->
+<script>
+  (() => {
+    window.addEventListener('DOMContentLoaded', () => {
+      const colorModeSwitch = document.getElementById('colorModeSwitch');
+      if (colorModeSwitch) {
+        colorModeSwitch.addEventListener('change', () => {
+          document.body.setAttribute('data-bs-theme', colorModeSwitch.checked ? 'dark' : 'light');
+        });
+      }
+    });
+  })();
+</script>
+
+<!-- Title -->
+<title>{{title}}</title>

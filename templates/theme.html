@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png" />
+    <link rel="manifest" href="./assets/favicon/manifest.json" />
+    <link rel="mask-icon" href="./assets/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="./assets/favicon/favicon.ico" />
+    <meta name="msapplication-config" content="./assets/favicon/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+    
+    <!-- Libs CSS -->
+    <link rel="stylesheet" href="./assets/css/libs.bundle.css" />
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="./assets/css/theme.bundle.css" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    
+    <!-- Map -->
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" />
+    
+    <!-- 
+      Color mode switch
+      - For demonstration purposes only
+      - If you do not have the possibility to store user preferences on the backend, I highly recommend switching to a media query implementation: https://getbootstrap.com/docs/5.3/customize/color-modes/#building-with-sass
+    -->
+    <script>
+      (() => {
+        window.addEventListener('DOMContentLoaded', () => {
+          const colorModeSwitch = document.getElementById('colorModeSwitch');
+          if (colorModeSwitch) {
+            colorModeSwitch.addEventListener('change', () => {
+              document.body.setAttribute('data-bs-theme', colorModeSwitch.checked ? 'dark' : 'light');
+            });
+          }
+        });
+      })();
+    </script>
+    
+    <!-- Title -->
+    <title>photo walk & eat &amp; fourhands</title>
+   
+    <link href="./button_space.css" rel="stylesheet"> <!-- 커스텀 CSS 파일 링크 -->
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-dark navbar-expand-lg navbar-togglable fixed-top">
+      <div class="container">
+        <!-- Navbar brand (mobile) -->
+        <a class="navbar-brand d-lg-none" href="{% url 'home:home' %}">photo walk & eat</a>
+    
+        <!-- Navbar toggler -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar brand -->
+        <a class="navbar-brand d-none d-lg-flex mx-lg-auto" href="{% url 'home:home' %}"> photo walk & eat </a>
+
+        <!-- Navbar collapse -->
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home:home' %}">Home</a></li>
+          
+              <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:mypage' user.id %}">마이페이지</a></li>
+              <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:logout' %}">로그아웃</a></li>
+       
+              <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:login' %}">로그인</a></li>
+              <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:signup' %}">회원가입</a></li>
+         
+          </ul>
+          
+          <!-- Navbar brand -->
+       
+    
+  
+          <!-- Color mode -->
+          <div class="form-check form-switch form-switch-color-mode ms-lg-3">
+            <input class="form-check-input" type="checkbox" role="switch" id="colorModeSwitch" />
+            <label class="form-check-label" for="colodeModeSwitch"></label>
+          </div>
+        </div>
+      </div>
+  </nav>
+    
+    <!-- WELCOME -->
+    <header data-jarallax data-speed=".8" style="background-image: url(assets/img/1.jpg)">
+      <div class="d-flex flex-column min-vh-100 bg-black bg-opacity-50 pt-10 pt-md-8 pb-7 pb-md-0">
+        <div class="container my-auto">
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6 text-center">
+              <!-- Preheading -->
+              <h6 class="text-xs text-white text-opacity-75"><span class="text-primary">서울 출사 나들이</span> 추천 어플리케이션</h6>
+
+              <!-- Heading -->
+              <h1 class="display-1 text-white mb-9"> photo walk <br>& eat</h1>
+
+              <!-- Subheading -->
+              <p class="text-center text-white text-opacity-80 mb-8">
+                원하는 장소를 AI를 통해 추천받고, 장소를 선택하세요! <br> 또한 주변 맛집과의 이동 코스를 알려드립니다. <br> 회원가입 후 이용하면 그동안의 추천 코스를 저장해둘 수 있어요.
+              </p>
+
+              <!-- Button -->
+              <a class="btn btn-outline-primary btn-custom-spacing text-white text-primary-hover mb-7 mb-md-0" href="#login"> login </a>
+              <a class="btn btn-outline-primary btn-custom-spacing text-white text-primary-hover mb-7 mb-md-0" href="#signup"> signup </a>
+              <a class="btn btn-outline-primary text-white text-primary-hover mb-7 mb-md-0" href="#without"> start without login </a>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-md">
+              <!-- Social links -->
+              <ul class="list-inline text-center text-md-start mb-3 my-md-5">
+                <li class="list-inline-item">
+                  <a class="text-white text-opacity-75 text-primary-hover" href="#!">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item ms-5">
+                  <a class="text-white text-opacity-75 text-primary-hover" href="#!">
+                    <i class="fab fa-facebook-f"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item ms-5">
+                  <a class="text-white text-opacity-75 text-primary-hover" href="#!">
+                    <i class="fab fa-instagram"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!-- <div class="col-md"> -->
+              <!-- Address -->
+              <!-- <p class="font-serif text-white text-opacity-75 text-center text-md-end text-lg-end my-md-5"> -->
+                <!-- <i class="fas fa-map-marker-alt text-primary me-3"></i> 1234 Dining Str., Los Angeles, CA 12345-0000 -->
+              <!-- </p> -->
+            <!-- </div> -->
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- DISCOVER -->
+    <section class="pt-7 pt-md-9">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2">
+            <!-- Divider -->
+            <hr class="hr-sm text-primary" />
+
+            <!-- Text -->
+            <p class="fs-lg lh-lg text-body-emphasis mb-5 mb-md-0">당신이 원하는 출사 테마를 선택하세요</p>
+          </div>
+          <div class="col-md-4">
+            <!-- Media -->
+            <div class="media-decoration media-decoration-1 mb-5 mb-md-0">
+              <!-- Border -->
+              <div class="media-decoration-border" data-jarallax-element="-40"></div>
+
+              <!-- Image -->
+              <img class="media-decoration-img img-fluid" src="assets/img/2.jpg" alt="..." />
+            </div>
+          </div>
+          <div class="col-md-5 align-self-center mx-auto">
+            <!-- Heading -->
+            <h2 class="mb-2"><em>사용자 맞춤 </em> AI 추천 시스템</h2>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- MENU -->
+    <section class="py-7 py-md-9 border-bottom">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-8 col-lg-6 text-center">
+            <!-- Heading -->
+            <h2 class="mb-2">출사 장소 주변 맛집을 추천드려요</h2>
+
+            <!-- Subheading -->
+            <p class="mb-6">
+              한식, 중식, 일식, 양식, 카페, 아시아 음식, 뷔페, 패스트푸드 등 <br> 다양한 음식 카테고리를 선택할 수 있어요.
+              <br>카테고리에 따른 아래의 예시 맛집들을 확인해보세요!
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <!-- Navigation -->
+            <div class="nav justify-content-center mb-6" id="menuTabs" role="tablist">
+              <a class="nav-link active" id="k_Tab" data-bs-toggle="tab" href="#한식" role="tab" aria-controls="한식" aria-selected="true"> 한식 </a>
+              <a class="nav-link" id="c_Tab" data-bs-toggle="tab" href="#중식" role="tab" aria-controls="중식"> 중식 </a>
+              <a class="nav-link" id="j_Tab" data-bs-toggle="tab" href="#일식" role="tab" aria-controls="일식"> 일식 </a>
+              <a class="nav-link" id="a_Tab" data-bs-toggle="tab" href="#양식" role="tab" aria-controls="양식"> 양식 </a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <!-- Content -->
+            <div class="tab-content" id="menuContent">
+              <div class="tab-pane fade show active" id="한식" role="tabpanel" aria-labelledby="k_Tab">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/26.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Lorem ipsum dolor sit amet</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$15</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/27.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce id ante ut arcu</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$23</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/28.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce sed dolor eget tortor</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$16</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/29.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Lorem ipsum dolor sit amet</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$15</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/30.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce id ante ut arcu</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$23</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/31.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce sed dolor eget tortor</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$16</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="중식" role="tabpanel" aria-labelledby="c_Tab">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/27.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce id ante ut arcu</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$23</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/26.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Lorem ipsum dolor sit amet</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$15</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/29.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Lorem ipsum dolor sit amet</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$15</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/28.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce sed dolor eget tortor</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$16</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/31.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce sed dolor eget tortor</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$16</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/30.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce id ante ut arcu</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$23</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="일식" role="tabpanel" aria-labelledby="j_Tab">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/28.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce sed dolor eget tortor</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$16</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/26.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Lorem ipsum dolor sit amet</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$15</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/29.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Lorem ipsum dolor sit amet</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$15</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/27.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce id ante ut arcu</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$23</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/30.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce id ante ut arcu</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$23</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/31.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce sed dolor eget tortor</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$16</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="양식" role="tabpanel" aria-labelledby="a_Tab">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/26.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Lorem ipsum dolor sit amet</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$15</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/30.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce id ante ut arcu</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$23</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/29.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Lorem ipsum dolor sit amet</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$15</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/27.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce id ante ut arcu</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$23</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/28.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce sed dolor eget tortor</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$16</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="py-3 border-bottom">
+                      <div class="row">
+                        <div class="col-3 align-self-center">
+                          <!-- Image -->
+                          <div class="ratio ratio-1x1">
+                            <img class="object-fit-cover" src="assets/img/31.jpg" alt="..." />
+                          </div>
+                        </div>
+                        <div class="col-7">
+                          <!-- Heading -->
+                          <h5 class="mb-2">Fusce sed dolor eget tortor</h5>
+
+                          <!-- Text -->
+                          <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, obcaecati! Sapiente laudantium.</p>
+                        </div>
+                        <div class="col-2">
+                          <!-- Price -->
+                          <div class="fs-4 font-serif text-center text-body-emphasis">$16</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISHES -->
+    <section class="py-7 py-md-9 overflow-hidden">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-8 col-lg-6 text-center">
+            <!-- Heading -->
+            <h2 class="mb-2">서울 곳곳의 <em>다양한 출사 장소</em> </h2>
+
+            <!-- Subheading -->
+            <p class="mb-6">
+              한강 공원, 서울숲, 남산타워, 놀이공원, 예쁜 길거리 등.. <br>다양한 장소가 여러분을 기다리고 있습니다!
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <!-- Slider -->
+            <div class="flickity-viewport-visible" data-flickity='{"cellAlign": "left", "contain": true, "imagesLoaded": true, "pageDots": false}'>
+              <div class="w-100 px-2" style="max-width: 320px">
+                <!-- Card -->
+                <div class="card border-0">
+                  <!-- Image -->
+                  <img class="card-img-top" src="assets/img/26.jpg" alt="..." />
+
+                  <!-- Body -->
+                  <div class="card-body">
+                    <!-- Heading -->
+                    <div class="row mb-2">
+                      <div class="col">
+                        <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur</h5>
+                      </div>
+                      <div class="col-auto">
+                        <span class="fs-4 font-serif text-body-emphasis">$15</span>
+                      </div>
+                    </div>
+
+                    <!-- Text -->
+                    <p class="mb-0">In perspiciatis nisi dicta, aperiam magnam eaque laborum iste.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="w-100 px-2" style="max-width: 320px">
+                <!-- Card -->
+                <div class="card border-0">
+                  <!-- Image -->
+                  <img class="card-img-top" src="assets/img/27.jpg" alt="..." />
+
+                  <!-- Body -->
+                  <div class="card-body">
+                    <!-- Heading -->
+                    <div class="row mb-2">
+                      <div class="col">
+                        <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur</h5>
+                      </div>
+                      <div class="col-auto">
+                        <span class="fs-4 font-serif text-body-emphasis">$18</span>
+                      </div>
+                    </div>
+
+                    <!-- Text -->
+                    <p class="mb-0">In perspiciatis nisi dicta, aperiam magnam eaque laborum iste.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="w-100 px-2" style="max-width: 320px">
+                <!-- Card -->
+                <div class="card border-0">
+                  <!-- Image -->
+                  <img class="card-img-top" src="assets/img/28.jpg" alt="..." />
+
+                  <!-- Body -->
+                  <div class="card-body">
+                    <!-- Heading -->
+                    <div class="row mb-2">
+                      <div class="col">
+                        <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur</h5>
+                      </div>
+                      <div class="col-auto">
+                        <span class="fs-4 font-serif text-body-emphasis">$23</span>
+                      </div>
+                    </div>
+
+                    <!-- Text -->
+                    <p class="mb-0">In perspiciatis nisi dicta, aperiam magnam eaque laborum iste.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="w-100 px-2" style="max-width: 320px">
+                <!-- Card -->
+                <div class="card border-0">
+                  <!-- Image -->
+                  <img class="card-img-top" src="assets/img/29.jpg" alt="..." />
+
+                  <!-- Body -->
+                  <div class="card-body">
+                    <!-- Heading -->
+                    <div class="row mb-2">
+                      <div class="col">
+                        <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur</h5>
+                      </div>
+                      <div class="col-auto">
+                        <span class="fs-4 font-serif text-body-emphasis">$32</span>
+                      </div>
+                    </div>
+
+                    <!-- Text -->
+                    <p class="mb-0">In perspiciatis nisi dicta, aperiam magnam eaque laborum iste.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="w-100 px-2" style="max-width: 320px">
+                <!-- Card -->
+                <div class="card border-0">
+                  <!-- Image -->
+                  <img class="card-img-top" src="assets/img/30.jpg" alt="..." />
+
+                  <!-- Body -->
+                  <div class="card-body">
+                    <!-- Heading -->
+                    <div class="row mb-2">
+                      <div class="col">
+                        <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur</h5>
+                      </div>
+                      <div class="col-auto">
+                        <span class="fs-4 font-serif text-body-emphasis">$15</span>
+                      </div>
+                    </div>
+
+                    <!-- Text -->
+                    <p class="mb-0">In perspiciatis nisi dicta, aperiam magnam eaque laborum iste.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="w-100 px-2" style="max-width: 320px">
+                <!-- Card -->
+                <div class="card border-0">
+                  <!-- Image -->
+                  <img class="card-img-top" src="assets/img/31.jpg" alt="..." />
+
+                  <!-- Body -->
+                  <div class="card-body">
+                    <!-- Heading -->
+                    <div class="row mb-2">
+                      <div class="col">
+                        <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur</h5>
+                      </div>
+                      <div class="col-auto">
+                        <span class="fs-4 font-serif text-body-emphasis">$42</span>
+                      </div>
+                    </div>
+
+                    <!-- Text -->
+                    <p class="mb-0">In perspiciatis nisi dicta, aperiam magnam eaque laborum iste.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="py-7 py-md-9 border-bottom">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-12 col-md-8 col-lg-6 text-center">
+                <!-- Heading -->
+                <h2 class="mb-2"> about '포핸즈'</h2>
+    
+                <!-- Subheading -->
+                <p class="mb-6">웹페이지 개발자이자 운영자인 '포핸즈'를 소개합니다</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <!-- Slider -->
+                <div data-flickity='{"imagesLoaded": true, "wrapAround": true}'>
+                  <div class="w-100">
+                    <div class="row align-items-center justify-content-center">
+                      <div class="col-8 col-md-3 order-md-1">
+                        <!-- Avatar -->
+                        <img class="img-fluid rounded-circle mb-5 mb-md-0" src="assets/img/20.jpg" alt="..." />
+                      </div>
+                      <div class="col-md-7 order-md-0">
+                        <!-- Blockquote -->
+                        <figure class="mx-auto mb-0" style="max-width: 500px">
+                          <blockquote class="blockquote mb-0">
+                            <p class="font-serif text-body-emphasis mb-5">
+                              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos at veritatis vitae modi ex quis quibusdam error repudiandae adipisci
+                              dolore perspiciatis iste, vel fuga a, libero architecto ratione deleniti sequi.
+                            </p>
+                          </blockquote>
+                          <figcaption class="blockquote-footer text-xs mb-0">Liam Smith</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-100">
+                    <div class="row align-items-center justify-content-center">
+                      <div class="col-8 col-md-3 order-md-1">
+                        <!-- Avatar -->
+                        <img class="img-fluid rounded-circle mb-5 mb-md-0" src="assets/img/21.jpg" alt="..." />
+                      </div>
+                      <div class="col-md-7 order-md-0">
+                        <!-- Blockquote -->
+                        <figure class="mx-auto mb-0" style="max-width: 500px">
+                          <blockquote class="blockquote mb-0">
+                            <p class="font-serif text-body-emphasis mb-5">
+                              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos at veritatis vitae modi ex quis quibusdam error repudiandae adipisci
+                              dolore perspiciatis iste, vel fuga a, libero architecto ratione deleniti sequi.
+                            </p>
+                          </blockquote>
+                          <figcaption class="blockquote-footer text-xs mb-0">Olivia Johnson</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-100">
+                    <div class="row align-items-center justify-content-center">
+                      <div class="col-8 col-md-3 order-md-1">
+                        <!-- Avatar -->
+                        <img class="img-fluid rounded-circle mb-5 mb-md-0" src="assets/img/22.jpg" alt="..." />
+                      </div>
+                      <div class="col-md-7 order-md-0">
+                        <!-- Blockquote -->
+                        <figure class="mx-auto mb-0" style="max-width: 500px">
+                          <blockquote class="blockquote mb-0">
+                            <p class="font-serif text-body-emphasis mb-5">
+                              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos at veritatis vitae modi ex quis quibusdam error repudiandae adipisci
+                              dolore perspiciatis iste, vel fuga a, libero architecto ratione deleniti sequi.
+                            </p>
+                          </blockquote>
+                          <figcaption class="blockquote-footer text-xs mb-0">Emma Williams</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+    <!-- GALLERY -->
+    <section class="py-7 py-md-9">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-8 col-lg-6 text-center">
+            <!-- Heading -->
+            <h2 class="mb-2">Photo Gallery</h2>
+
+            <!-- Subheading -->
+            <p class="mb-6">추천 출사 장소에서 찍은 다양한 사진들이에요</p>
+          </div>
+        </div>
+        <div class="row gx-3" data-isotope>
+          <div class="col-6 col-sm-6 col-md-4">
+            <!-- Item -->
+            <a class="d-block mb-3" href="#" data-bigpicture='{ "imgSrc": "assets/img/11.jpg" }'>
+              <img class="img-fluid" src="assets/img/11.jpg" alt="..." />
+            </a>
+          </div>
+          <div class="col-6 col-sm-6 col-md-4">
+            <!-- Item -->
+            <a class="d-block mb-3" href="#" data-bigpicture='{ "imgSrc": "assets/img/16.jpg" }'>
+              <img class="img-fluid" src="assets/img/16.jpg" alt="..." />
+            </a>
+          </div>
+          <div class="col-6 col-sm-6 col-md-4">
+            <!-- Item -->
+            <a class="d-block mb-3" href="#" data-bigpicture='{ "imgSrc": "assets/img/13.jpg" }'>
+              <img class="img-fluid" src="assets/img/13.jpg" alt="..." />
+            </a>
+          </div>
+          <div class="col-6 col-sm-6 col-md-4">
+            <!-- Item -->
+            <a class="d-block mb-3" href="#" data-bigpicture='{ "imgSrc": "assets/img/15.jpg" }'>
+              <img class="img-fluid" src="assets/img/15.jpg" alt="..." />
+            </a>
+          </div>
+          <div class="col-6 col-sm-6 col-md-4">
+            <!-- Item -->
+            <a class="d-block mb-3" href="#" data-bigpicture='{ "imgSrc": "assets/img/14.jpg" }'>
+              <img class="img-fluid" src="assets/img/14.jpg" alt="..." />
+            </a>
+          </div>
+          <div class="col-6 col-sm-6 col-md-4">
+            <!-- Item -->
+            <a class="d-block mb-3" href="#" data-bigpicture='{ "imgSrc": "assets/img/18.jpg" }'>
+              <img class="img-fluid" src="assets/img/18.jpg" alt="..." />
+            </a>
+          </div>
+          <div class="col-6 col-sm-6 col-md-4">
+            <!-- Item -->
+            <a class="d-block mb-3" href="#" data-bigpicture='{ "imgSrc": "assets/img/17.jpg" }'>
+              <img class="img-fluid" src="assets/img/17.jpg" alt="..." />
+            </a>
+          </div>
+          <div class="col-6 col-sm-6 col-md-4">
+            <!-- Item -->
+            <a class="d-block mb-3" href="#" data-bigpicture='{ "imgSrc": "assets/img/12.jpg" }'>
+              <img class="img-fluid" src="assets/img/12.jpg" alt="..." />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  
+
+    <!-- FOOTER -->
+    <footer class="py-7 py-md-9 bg-black">
+      <div class="container px-4">
+        <div class="row gx-7">
+          <div class="col-sm-4">
+            <!-- Heading -->
+            <h5 class="text-xs text-primary">About Us</h5>
+    
+            <!-- Text -->
+            <p class="mb-6">
+              우리는 포핸즈, 소프트웨어 공학 설계에서 출발한 프로젝트 팀으로 2024 1학기 학습공동체의 스터디 팀으로 지원함.
+          </div>
+          <div class="col-sm-4">
+            <!-- Heading -->
+            <h5 class="text-xs text-primary">Contact info</h5>
+    
+            <!-- List -->
+            <ul class="list-unstyled mb-6">
+              <li class="d-flex mb-2">
+                <div class="fas fa-map-marker-alt me-3 mt-2 fs-sm"></div>
+                서울특별시 동대문구 서울시립대로 163 <br>서울시립대학교 과학기술관
+              </li>
+              
+              <li class="d-flex">
+                <div class="far fa-envelope me-3 mt-2 fs-sm"></div>
+                <a href="mailto:admin@domain.com">4handsgpt@gmail.com</a>
+              </li>
+            </ul>
+          </div>
+
+        <div class="row">
+          <div class="col-12">
+            <!-- Copyright -->
+            <div class="d-flex align-items-center">
+              <hr class="hr-sm me-3" style="height: 1px" />
+              &copy; 2024 fourhands. All rights reserved.
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <!-- Vendor JS -->
+    <script src="./assets/js/vendor.bundle.js"></script>
+    
+    <!-- Theme JS -->
+    <script src="./assets/js/theme.bundle.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+  </body>
+</html> 

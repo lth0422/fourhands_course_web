@@ -1,0 +1,85 @@
+//
+// navbar.scss
+//
+
+.navbar {
+	--#{$prefix}navbar-bg-color: var(--#{$prefix}body-bg);
+}
+
+// Background
+
+.navbar::before {
+	content: '';
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	background-color: var(--#{$prefix}navbar-bg-color);
+	transform: translateY(-100%);
+	transition: all .3s;
+	z-index: -1;
+}
+
+.navbar:not(.navbar-dark)::before {
+	transform: translateY(0);
+}
+
+// Brand
+
+.navbar-brand {
+	font-family: $headings-font-family;
+	font-style: italic;
+	transition: color .1s;
+}
+
+.navbar-brand > img {
+	max-height: calc(var(--#{$prefix}navbar-brand-font-size) * #{$line-height-base});
+	width: auto;
+}
+
+// Nav link
+
+.navbar .navbar-nav .nav-link {
+	@include text-xs();
+	transition: color .1s;
+}
+
+// Dropdown
+
+@each $breakpoint, $value in $grid-breakpoints {
+	@include media-breakpoint-down(#{$breakpoint}) {
+		.navbar-expand-#{$breakpoint} {
+			.navbar-nav > .nav-item > .dropdown-menu {
+				margin-bottom: $spacer * .5;
+				padding-top: 0;
+				padding-bottom: 0;
+				border-width: 0;
+			}
+		
+			.navbar-nav > .nav-item > .dropdown-menu > .dropdown-header {
+				padding-left: $spacer * .5;
+				padding-right: 0;
+			}
+		
+			.navbar-nav > .nav-item > .dropdown-menu > .dropdown-item {
+				padding-left: $spacer * .5;
+				padding-right: 0;
+			}
+		}
+	}
+}
+
+// Dark mode
+
+@if $enable-dark-mode {
+	@include color-mode(dark, true) {
+		.navbar {
+			--#{$prefix}navbar-color: #{$navbar-dark-color};
+			--#{$prefix}navbar-hover-color: #{$navbar-dark-hover-color};
+			--#{$prefix}navbar-disabled-color: #{$navbar-dark-disabled-color};
+			--#{$prefix}navbar-active-color: #{$navbar-dark-active-color};
+			--#{$prefix}navbar-brand-color: #{$navbar-dark-brand-color};
+			--#{$prefix}navbar-brand-hover-color: #{$navbar-dark-brand-hover-color};
+			--#{$prefix}navbar-toggler-border-color: #{$navbar-dark-toggler-border-color};
+			--#{$prefix}navbar-toggler-icon-bg: #{escape-svg($navbar-dark-toggler-icon-bg)};
+		}
+	}
+}

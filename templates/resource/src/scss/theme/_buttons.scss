@@ -1,0 +1,22 @@
+//
+// buttons.scss
+// 
+
+.btn {
+  @include text-xs();
+}
+
+
+// Outline
+
+@each $color, $value in $theme-colors {
+  .btn-outline-#{$color} {
+    --#{$prefix}btn-bg: transparent;
+    --#{$prefix}btn-color: #{$btn-color};
+    --#{$prefix}btn-hover-bg: transparent;
+    --#{$prefix}btn-hover-color: #{$primary};
+    --#{$prefix}btn-active-bg: transparent;
+    --#{$prefix}btn-active-color: #{$primary};
+    --#{$prefix}btn-disabled-color: #{$btn-color};
+  }
+}

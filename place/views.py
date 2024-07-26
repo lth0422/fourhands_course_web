@@ -1,29 +1,33 @@
 import pandas as pd
 from django.shortcuts import render, redirect
 from .models import PlaceModel
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+import json
+
+place_categories = ['거리&골목길',
+                    '건축물',
+                    '공원',
+                    '궁궐',
+                    '광화문&종로',
+                    '다리',
+                    '산',
+                    '서촌&북촌',
+                    '식물',
+                    '역사 문화 공간',
+                    '자연산책로',
+                    '캠퍼스',
+                    '야경&전망',
+                    '테마파크',
+                    '한강'
+                    ]
 
 # 장소 카테고리 선택을 정의하는 함수
 def place_category(request):
-    place_categories = ['거리&골목길',
-                        '건축물',
-                        '공원',
-                        '궁궐',
-                        '광화문&종로',
-                        '다리',
-                        '산',
-                        '서촌&북촌',
-                        '식물',
-                        '역사 문화 공간',
-                        '자연산책로',
-                        '캠퍼스',
-                        '야경&전망',
-                        '테마파크',
-                        '한강'
-                        ]
 
     if request.method == 'POST':
         selected_place_categories = request.POST.getlist('place_categories')
-        print(selected_place_categories)
+        # print(selected_place_categories)
 
         # 선택된 카테고리들을 세션에 저장
         # 만약 선택한 카테고리가 2개를 넘으면 에러 메세지 출력
@@ -51,11 +55,11 @@ def references(request):
     # CSV 파일을 pandas DataFrame으로 읽기
     df = pd.read_csv(csv_file_path, encoding='UTF-8')
 
-    print(df.columns)
+    # print(df.columns)
 
 
     # DataFrame을 순회하며 Django 모델에 데이터 저장
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         PlaceModel.objects.create(
             name=row['출사 장소 리스트'],
             attribute1=row['거리&골목길'],
@@ -80,24 +84,16 @@ def references(request):
         )
 
     selected_place_categories = request.session.get('selected_place_categories', [])
-    print(selected_place_categories)
+    # print(selected_place_categories)
+
+    if not selected_place_categories:
+        return render(request, 'place/place_category.html', {'place_categories': place_categories, 'error_message': '키워드가 선택되지 않았습니다.'})
 
     # 선택된 카테고리들을 기반으로 데이터 프레임 필터링
 
     # 만약 선택한 카테고리가 1개일 때
     if len(selected_place_categories) == 1:
         recommended_place = df[df[selected_place_categories[0]] == 1]['출사 장소 리스트'].tolist()
-
-        if request.method == 'POST':
-            place_afterpick = request.POST.get('place_afterpick')
-            print(place_afterpick)
-
-            request.session['place_afterpick'] = place_afterpick
-            return redirect('/place/afterpick')
-
-
-        return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place,'naver_map_api_key': 'hhiu54m7d5'})
-
     # 만약 선택한 카테고리가 2개일 때
     if len(selected_place_categories) == 2:
         # 2개의 카테고리에 모두 해당 or 1개의 카테고리만 해당하는 나들이 장소 출력
@@ -105,21 +101,26 @@ def references(request):
         recommended_place1T = df[(df[selected_place_categories[0]] == 1)&(df[selected_place_categories[1]] != 1)]['출사 장소 리스트'].tolist()
         recommended_place2T = df[(df[selected_place_categories[0]] != 1)&(df[selected_place_categories[1]] == 1)]['출사 장소 리스트'].tolist()
 
-        if request.method == 'POST':
-            place_afterpick = request.POST.get('place_afterpick')
-            # Save selected categories in session
-            request.session['place_afterpick'] = place_afterpick
-            return redirect('/place/afterpick')
+    if request.method == 'POST':
+        place_afterpick = request.POST.get('place_afterpick')
+        # Save selected categories in session
+        request.session['place_afterpick'] = place_afterpick
+        return redirect('/place/afterpick')
+    
+    context = {
+        'recommended_place': recommended_place,
+        'naver_map_api_key': 'hhiu54m7d5',
+    }
+    
+    if len(selected_place_categories) == 2:
+        context.update({
+            'recommended_place1T': recommended_place1T,
+            'recommended_place2T': recommended_place2T,
+            'selected_place_category1': selected_place_categories[0],
+            'selected_place_category2': selected_place_categories[1]
+        })
 
-        # 랜더 함수를 통해 나들이 장소를 선택하는 페이지 전송, recommended_place.html에서 사용할 인자들 정의 및 전송
-        return render(request, 'place/recommended_place.html', {'recommended_place': recommended_place,
-                                                                                    'recommended_place1T': recommended_place1T,
-                                                                                    'recommended_place2T': recommended_place2T,
-                                                                                    'naver_map_api_key': 'hhiu54m7d5',
-                                                                                    'selected_place_category1': selected_place_categories[0],
-                                                                                    'selected_place_category2': selected_place_categories[1]
-
-                                                                                    })
+    return render(request, 'place/recommended_place.html', context)
 
 # 나들이 장소를 선택한 후 추가 정보를 확인하는 것을 정의하는 함수
 def afterpick(request):
@@ -133,5 +134,11 @@ def afterpick(request):
     # 위도 및 경도를 템플릿으로 전달
     return render(request, 'place/afterpick.html', {'place_afterpick': place_afterpick, 'latitude': selected_place_info.latitude, 'longitude': selected_place_info.longitude})
 
-
-# Create your views here.
+@require_POST
+def set_keyword(request):
+    data = json.loads(request.body)
+    keyword = data.get('keyword')
+    if keyword:
+        request.session['selected_place_categories'] = [keyword]
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})

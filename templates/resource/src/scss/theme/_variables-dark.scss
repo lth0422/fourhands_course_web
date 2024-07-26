@@ -1,0 +1,20 @@
+//
+// variables-dark.scss
+//
+
+$light-dark: $gray-800 !default;
+$body-color-dark: $gray-600 !default;
+
+// Components
+
+$border-color-dark: $gray-800 !default;
+$link-color-dark: $primary !default;
+$link-hover-color-dark: $link-color-dark !default;
+
+// Typography
+
+$headings-color-dark: var(--#{$prefix}emphasis-color) !default;
+
+// Decorations
+
+$block-decoration-solid-color-dark: $light-dark !default;

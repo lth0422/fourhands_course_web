@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}출사 테마 선택 방법{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .button-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    button {
+        padding: 15px 30px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+    }
+    .category-button {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .recommendation-button {
+        background-color: #008CBA;
+        color: white;
+    }
+</style>
+
+<div class="button-container">
+    <button class="category-button" onclick="window.location.href='{% url "place:place_category" %}'">카테고리 선택하기</button>
+    <button class="recommendation-button" onclick="window.location.href='{% url "cgpt:cgpt" %}'">챗봇에게 추천받기</button>
+</div>
+
+{% endblock %}
