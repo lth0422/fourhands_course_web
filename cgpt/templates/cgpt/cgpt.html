@@ -97,7 +97,7 @@
             {% csrf_token %}
             <div class="input-group mb-3">
                 <input type="text" id="user_input" name="user_input" class="form-control" placeholder="장소에 대해 입력하세요...">
-                <button type="submit" class="btn btn-primary">전송</button>
+                <button type="submit" class="btn btn-primary" id="send-button">전송</button>
             </div>
         </form>
     </div>
@@ -155,9 +155,6 @@
                         // Apply keyword-button class to each button
                         buttonsContainer.querySelectorAll('button').forEach(button => {
                             button.className = 'keyword-button';
-                            button.addEventListener('click', function() {
-                                alert(`"${button.innerText}" 버튼이 눌렸습니다.`);
-                            });
                         });
 
                         botBubble.appendChild(buttonsContainer);
@@ -172,7 +169,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.body.addEventListener('click', function(event) {
-                if (event.target.tagName === 'BUTTON') {
+                if (event.target.tagName === 'BUTTON' && event.target.id !== 'send-button') {
                     var keyword = event.target.textContent;
                     fetch('/place/set_keyword/', {
                         method: 'POST',

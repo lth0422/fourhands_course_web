@@ -84,7 +84,7 @@ def references(request):
         )
 
     selected_place_categories = request.session.get('selected_place_categories', [])
-    print(selected_place_categories)
+    # print(selected_place_categories)
 
     if not selected_place_categories:
         return render(request, 'place/place_category.html', {'place_categories': place_categories, 'error_message': '키워드가 선택되지 않았습니다.'})

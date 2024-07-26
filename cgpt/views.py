@@ -25,34 +25,34 @@ def filter_valid_keywords(keywords_string):
       return []
 
 def recommend_keyword(request):
-    if request.method != 'POST':
-      return handle_error('Invalid request method')
-    
-    user_input = request.POST.get('user_input')
-    run, thread_id = create_thread_and_run(user_input)
-    
-    if run.status != 'completed':
-      return handle_error(f"Run Status: {run.status}, Details: {run}")
-    
-    latest_message = get_latest_message(thread_id)
-    if not latest_message:
-      return handle_error("No valid response received from assistant")
-    
-    try:
-      recommend_reason, keywords_string = latest_message.split('@')
-      # 유효한 키워드만 필터링
-      filtered_keywords = filter_valid_keywords(keywords_string)
-      print(filtered_keywords)
-      if not filtered_keywords or len(filtered_keywords) == 0:
-        return handle_error(recommend_reason)
+  if request.method != 'POST':
+    return handle_error('Invalid request method')
+  
+  user_input = request.POST.get('user_input')
+  run, thread_id = create_thread_and_run(user_input)
+  
+  if run.status != 'completed':
+    return handle_error(f"Run Status: {run.status}, Details: {run}")
+  
+  latest_message = get_latest_message(thread_id)
+  if not latest_message:
+    return handle_error("No valid response received from assistant")
+  
+  try:
+    recommend_reason, keywords_string = latest_message.split('@')
+    # 유효한 키워드만 필터링
+    filtered_keywords = filter_valid_keywords(keywords_string)
+    # print(filtered_keywords)
+    if not filtered_keywords or len(filtered_keywords) == 0:
+      return handle_error(recommend_reason)
 
-      # 필터링된 키워드 리스트를 사용하여 버튼 HTML 생성
-      buttons_html = ''.join([f'<button type="button">{keyword}</button>' for keyword in filtered_keywords])
+    # 필터링된 키워드 리스트를 사용하여 버튼 HTML 생성
+    buttons_html = ''.join([f'<button type="button">{keyword}</button>' for keyword in filtered_keywords])
 
-      return JsonResponse({
-          'recommend_reason': recommend_reason,
-          'keywords_string': filtered_keywords,
-          'buttons_html': buttons_html  # 버튼 HTML을 응답에 추가
-      })
-    except ValueError:
-      return handle_error(latest_message)
+    return JsonResponse({
+      'recommend_reason': recommend_reason,
+      'keywords_string': filtered_keywords,
+      'buttons_html': buttons_html  # 버튼 HTML을 응답에 추가
+    })
+  except ValueError:
+    return handle_error(latest_message)
