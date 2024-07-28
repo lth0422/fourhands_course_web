@@ -1,107 +1,317 @@
-{% extends 'base.html' %}
-
-{% block title %}챗봇에게 추천받기{% endblock %}
-
-{% block content %}
-{% load static %}
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>출사 장소 추천 챗봇</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .chat-container {
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {% load static %}
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/favicon/apple-touch-icon.png' %}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon/favicon-32x32.png' %}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/favicon/favicon-16x16.png' %}" />
+    <link rel="manifest" href="{% static 'assets/favicon/manifest.json' %}" />
+    <link rel="mask-icon" href="{% static 'assets/favicon/safari-pinned-tab.svg' %}" color="#5bbad5" />
+    <link rel="shortcut icon" href="{% static 'assets/favicon/favicon.ico' %}" />
+    <meta name="msapplication-config" content="{% static 'assets/favicon/browserconfig.xml' %}" />
+    <meta name="theme-color" content="#ffffff" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Libs CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/libs.bundle.css' %}" />
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/theme.bundle.css' %}" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    
+    <!-- Map -->
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" />
+    
+    <script>
+      (() => {
+        window.addEventListener('DOMContentLoaded', () => {
+          const colorModeSwitch = document.getElementById('colorModeSwitch');
+          if (colorModeSwitch) {
+            colorModeSwitch.addEventListener('change', () => {
+              document.body.setAttribute('data-bs-theme', colorModeSwitch.checked ? 'dark' : 'light');
+            });
+          }
+        });
+      })();
+    </script>
+    
+    <!-- Title -->
+    <title>출사 장소 추천 챗봇</title>   
+   
+    <link href="{% static 'button_space.css' %}" rel="stylesheet"> <!-- 커스텀 CSS 파일 링크 -->
+
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-dark navbar-expand-lg navbar-togglable fixed-top">
+        <div class="container">
+            <!-- Navbar brand (mobile) -->
+            <a class="navbar-brand d-lg-none" href="{% url 'home:home' %}">photo walk & eat</a>
+        
+            <!-- Navbar toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar brand -->
+            <a class="navbar-brand d-none d-lg-flex mx-lg-auto" href="{% url 'home:home' %}"> photo walk & eat </a>
+
+            <!-- Navbar collapse -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home:home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:logout' %}">로그아웃</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:login' %}">로그인</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:signup' %}">회원가입</a></li>
+            </ul>
+
+            <!-- Color mode -->
+            <div class="form-check form-switch form-switch-color-mode ms-lg-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="colorModeSwitch" />
+                <label class="form-check-label" for="colodeModeSwitch"></label>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow-1">
+        <!-- HEADER -->
+        <header data-jarallax data-speed=".8" style="background-image: url({% static 'assets/img/32.jpg' %})">
+            <div class="pt-8 pb-6 pt-md-10 pb-md-9 bg-black bg-opacity-50">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-8 col-lg-6 text-center">
+                            <!-- Heading -->
+                            <h1 class="display-6 fw-bold text-white">choose your place category <br><br>with chatbot</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: Arial, sans-serif;
+            }
+            
+            .button-container {
+                text-align: center;
+                margin-bottom: 300px;
+            }
+            
+            button {
+                padding: 15px 30px;
+                margin: 10px;
+                font-size: 16px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+            }
+            
+            .subheading {
+                margin-bottom: 100px;
+            }  
+            
+            .category-button {
+                background-color: #4CAF50;
+                color: white;
+            }
+            
+            .recommendation-button {
+                background-color: #008CBA;
+                color: white;
+            }
+            
+            .form-check input[type="checkbox"] {
+                display: none;
+            }
+            
+            .form-check label {
+                cursor: pointer;
+                padding: 8px 16px;
+                display: inline-block;
+                background: #888;
+                color: #fff;
+                font-family: sans-serif;
+                border-radius: 4px;
+                margin-bottom: 8px;
+                transition: background 0.2s ease;
+            }
+            
+            .form-check input[type="checkbox"]:checked + label {
+                background: #86d993;
+            }
+            
+            table th {
+                text-align: center;
+                padding: 30px;
+            }
+            
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: rgb(33, 135, 218);
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 70px;
+                cursor: pointer;
+                border-radius: 8px;
+            }
+
+            .chat-container {
             max-width: 600px;
-            margin: 50px auto;
+            margin: 100px auto;
             border: 1px solid #ccc;
             border-radius: 10px;
             padding: 20px;
             background-color: #f9f9f9;
-        }
-        .chat-bubble {
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 10px;
-            word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
-        }
-        .chat-bubble.user {
-            background-color: #007bff;
-            color: white;
-            text-align: left; /* 텍스트를 왼쪽 정렬 */
-        }
-        .chat-bubble.bot {
-            background-color: #e9ecef;
-            text-align: left; /* 텍스트를 왼쪽 정렬 */
-        }
-        .chat-bubble.typing {
-            background-color: #e9ecef;
-            font-style: italic;
-        }
-        .dot-flashing {
-            position: relative;
-            width: 1em;
-            height: 1em;
-            margin: 0 auto;
-        }
-        .dot-flashing::before, .dot-flashing::after {
-            content: '';
-            display: inline-block;
-            position: absolute;
-            top: 0;
-            width: 1em;
-            height: 1em;
-            border-radius: 50%;
-            background-color: #bbb;
-            animation: dot-flashing 1s infinite alternate;
-        }
-        .dot-flashing::before {
-            left: -1.5em;
-        }
-        .dot-flashing::after {
-            left: 1.5em;
-            animation-delay: 0.5s;
-        }
-        @keyframes dot-flashing {
-            0% {
+            }
+            .chat-bubble {
+                margin-bottom: 20px;
+                padding: 10px;
+                border-radius: 10px;
+                word-wrap: break-word; /* 긴 단어가 있을 경우 줄 바꿈 처리 */
+            }
+            .chat-bubble.user {
+                background-color: #007bff;
+                color: white;
+                text-align: left; /* 텍스트를 왼쪽 정렬 */
+            }
+            .chat-bubble.bot {
+                background-color: #e9ecef;
+                text-align: left; /* 텍스트를 왼쪽 정렬 */
+            }
+            .chat-bubble.typing {
+                background-color: #e9ecef;
+                font-style: italic;
+            }
+            .dot-flashing {
+                position: relative;
+                width: 1em;
+                height: 1em;
+                margin: 0 auto;
+            }
+            .dot-flashing::before, .dot-flashing::after {
+                content: '';
+                display: inline-block;
+                position: absolute;
+                top: 0;
+                width: 1em;
+                height: 1em;
+                border-radius: 50%;
                 background-color: #bbb;
+                animation: dot-flashing 1s infinite alternate;
             }
-            50%, 100% {
-                background-color: #fff;
+            .dot-flashing::before {
+                left: -1.5em;
             }
-        }
-        .keyword-button {
-            margin: 5px;
-            border: none;
-            color: white;
-            background-color: #007bff;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .keyword-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="chat-container">
-        <h2 class="text-center">출사 장소 추천 챗봇</h2>
-        <div id="chat-box">
-            <div class="chat-bubble bot">
-                <p>안녕하세요! 출사 장소를 추천해 드릴게요. 촬영하고 싶은 장소에 대해 말씀해 주세요.</p>
+            .dot-flashing::after {
+                left: 1.5em;
+                animation-delay: 0.5s;
+            }
+            @keyframes dot-flashing {
+                0% {
+                    background-color: #bbb;
+                }
+                50%, 100% {
+                    background-color: #fff;
+                }
+            }
+            .keyword-button {
+                margin: 5px;
+                border: none;
+                color: white;
+                background-color: #007bff;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .keyword-button:hover {
+                background-color: #0056b3;
+            }
+            </style>
+            
+
+        <!-- place category -->
+        <section class="pt-8 pt-md-20">
+            <div class="chat-container">
+                <h2 class="text-center">출사 장소 추천 챗봇</h2>
+                <div id="chat-box">
+                    <div class="chat-bubble bot">
+                        <p>안녕하세요! 출사 장소를 추천해 드릴게요. 촬영하고 싶은 장소에 대해 말씀해 주세요.</p>
+                    </div>
+                </div>
+                <form id="chat-form">
+                    {% csrf_token %}
+                    <div class="input-group mb-7">
+                        <input type="text" id="user_input" name="user_input" class="form-control" placeholder="장소에 대해 입력하세요...">
+                        <button type="submit" class="btn btn-primary" id="send-button">전송</button>
+                    </div>
+                </form>
+            </div>
+            
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-7 py-md-9 bg-black mt-auto">
+        <div class="container px-4">
+            <div class="row gx-7">
+                <div class="col-sm-4">
+                    <!-- Heading -->
+                    <h5 class="text-xs text-primary">About Us</h5>
+                    <!-- Text -->
+                    <p class="mb-6">
+                        우리는 포핸즈, 소프트웨어 공학 설계에서 출발한 프로젝트 팀으로 2024 1학기 학습공동체의 스터디 팀으로 지원함.
+                    </p>
+                </div>
+                <div class="col-sm-4">
+                    <!-- Heading -->
+                    <h5 class="text-xs text-primary">Contact info</h5>
+                    <!-- List -->
+                    <ul class="list-unstyled mb-6">
+                        <li class="d-flex mb-2">
+                            <div class="fas fa-map-marker-alt me-3 mt-2 fs-sm"></div>
+                            서울특별시 동대문구 서울시립대로 163 <br>서울시립대학교 과학기술관
+                        </li>
+                        <li class="d-flex">
+                            <div class="far fa-envelope me-3 mt-2 fs-sm"></div>
+                            <a href="mailto:admin@domain.com">4handsgpt@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-12">
+                    <!-- Copyright -->
+                    <div class="d-flex align-items-center">
+                        <hr class="hr-sm me-3" style="height: 1px" />
+                        &copy; 2024 fourhands. All rights reserved.
+                    </div>
+                </div>
             </div>
         </div>
-        <form id="chat-form">
-            {% csrf_token %}
-            <div class="input-group mb-3">
-                <input type="text" id="user_input" name="user_input" class="form-control" placeholder="장소에 대해 입력하세요...">
-                <button type="submit" class="btn btn-primary" id="send-button">전송</button>
-            </div>
-        </form>
-    </div>
+    </footer>
 
+    <!-- JAVASCRIPT -->
+    <!-- Vendor JS -->
+    <script src="{% static 'assets/js/vendor.bundle.js' %}"></script>
+    <!-- Theme JS -->
+    <script src="{% static 'assets/js/theme.bundle.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.getElementById('chat-form').addEventListener('submit', function(e) {
@@ -206,4 +416,5 @@
     </script>
 </body>
 </html>
-{% endblock %}
+
+
