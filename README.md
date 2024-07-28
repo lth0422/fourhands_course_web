@@ -11,7 +11,7 @@
 ## Table of Contents
 - [About the Project](#about-the-project)
 - [Features](#-features)
-- [Getting Started](#-getting-started)
+- [Demo Results](#-demo-results)
 - [Contact Us](#-contact-us)
 
 ## ✍ About the Project
@@ -28,7 +28,7 @@
 - **💓마이페이지**: 사용자가 추천받은 출사 지역과 맛집 정보를 저장하고 관리할 수 있는 개인화된 페이지를 제공합니다.
 - **🚃경로 설정 및 저장**: 출발지와 도착지를 설정하고, 경로를 마이페이지에 저장하여 나만의 출사 코스를 완성할 수 있습니다.
 
-## 🚶 Getting Started
+## 🚶 Demo Results
 
 
 ## 📞Contact Us
@@ -38,5 +38,5 @@
 |--------|------------------------|
 | 이서윤(팀장) | seoyoon7559@uos.ac.kr |
 | 이태훈 | hello042@uos.ac.kr     |
-| 우현성 |                        |
+| 우현성 | hyone0124@uos.ac.kr    |
 | 김서랑 | switch1218@uos.ac.kr   |
