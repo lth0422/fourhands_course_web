@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}장소 최종 선택{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    /* 맵과 이미지를 가로로 나열하기 위한 Flexbox 스타일 */
+    .container-map {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    /* 맵과 이미지의 각각의 스타일 */
+    #map,
+    .container-image {
+        width: 600px;
+        height: 400px;
+        margin: 10px; /* 여백 추가 */
+    }
+
+    /* 위치를 하단으로 이동한 버튼들을 가운데 정렬하기 위한 스타일 */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .button-container .btn {
+        margin: 0 10px; /* 각 버튼 사이 여백 조절 */
+    }
+</style>
+
+    <script type="text/javascript" src="http://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=hhiu54m7d5"></script>
+
+<div class="container">
+    <div class="text-center mt-5">
+        <h1>선택한 장소</h1>
+        <p class="lead">{{ place_afterpick }}</p>
+    </div>
+</div>
+
+<!-- 맵과 이미지를 표시할 div 요소를 추가 -->
+<div class="container-map">
+    <!-- 맵을 표시할 div 요소 -->
+    <div id="map"></div>
+
+    <!-- 이미지를 표시할 div 요소 -->
+    <div class="container-image">
+        {% with image_path="place/img/"|add:place_afterpick|add:".jpg" %}
+            <img src="{% static image_path %}" alt="{{ place_afterpick }} Image" class="img-fluid" style="width: 600px; height: 400px;">
+        {% endwith %}
+    </div>
+</div>
+
+<!-- 위치를 하단으로 이동한 버튼들 -->
+<div class="button-container">
+    <a href="javascript:history.back();" class="btn btn-warning">다시 고를래요</a>    <!-- 나들이 장소를 선택하는 화면으로 돌아가기 -->
+    <a href="/restaurant/food_category/" class="btn btn-success">여기로 할래요</a>    <!-- 나들이 장소 최종 선택 -->
+    <a href="https://map.naver.com/p/search/{{ place_afterpick }}" class="btn btn-primary" target="_blank">추가 정보 확인하기 </a>  <!-- 선택한 나들의 장소에 대한 추가 정보 확인, 네이버 지도 링크 -->
+
+</div>
+
+<script>
+    // 네이버 지도 API 초기화
+    var map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng({{ latitude }}, {{ longitude }}), // 초기 지도 중심 좌표
+        zoom: 15, // 초기 지도 확대 레벨
+        mapTypeId: naver.maps.MapTypeId.NORMAL // 일반 지도 타입
+    });
+
+    // 선택한 장소에 마커 추가
+    var marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng({{ latitude }}, {{ longitude }}),
+        map: map
+    });
+
+    // 마커 위에 정보창 추가
+    var infowindow = new naver.maps.InfoWindow({
+        content: '<h3>{{ place_afterpick }}</h3>' +
+                 '<p>위도: {{ latitude }}</p>' +
+                 '<p>경도: {{ longitude }}</p>'
+    });
+
+    naver.maps.Event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+    });
+</script>
+{% endblock %}

@@ -1,106 +1,339 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {% load static %}
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/favicon/apple-touch-icon.png' %}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon/favicon-32x32.png' %}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/favicon/favicon-16x16.png' %}" />
+    <link rel="manifest" href="{% static 'assets/favicon/manifest.json' %}" />
+    <link rel="mask-icon" href="{% static 'assets/favicon/safari-pinned-tab.svg' %}" color="#5bbad5" />
+    <link rel="shortcut icon" href="{% static 'assets/favicon/favicon.ico' %}" />
+    <meta name="msapplication-config" content="{% static 'assets/favicon/browserconfig.xml' %}" />
+    <meta name="theme-color" content="#ffffff" />
+    
+    <!-- Libs CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/libs.bundle.css' %}" />
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/theme.bundle.css' %}" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    
+    <!-- Map -->
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" />
+    
+    <script>
+      (() => {
+        window.addEventListener('DOMContentLoaded', () => {
+          const colorModeSwitch = document.getElementById('colorModeSwitch');
+          if (colorModeSwitch) {
+            colorModeSwitch.addEventListener('change', () => {
+              document.body.setAttribute('data-bs-theme', colorModeSwitch.checked ? 'dark' : 'light');
+            });
+          }
+        });
+      })();
+    </script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{ naver_map_api_key }}"></script>
 
-{% block title %}Restaurant Details{% endblock %}
+    <!-- Title -->
+    <title>photo walk & eat &amp; fourhands</title>
+   
+    <link href="{% static 'button_space.css' %}" rel="stylesheet"> <!-- 커스텀 CSS 파일 링크 -->
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-dark navbar-expand-lg navbar-togglable fixed-top">
+        <div class="container">
+            <!-- Navbar brand (mobile) -->
+            <a class="navbar-brand d-lg-none" href="{% url 'home:home' %}">photo walk & eat</a>
+        
+            <!-- Navbar toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-{% block content %}
-{% load static %}
+            <!-- Navbar brand -->
+            <a class="navbar-brand d-none d-lg-flex mx-lg-auto" href="{% url 'home:home' %}"> photo walk & eat </a>
 
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{ naver_map_api_key }}"></script>
+            <!-- Navbar collapse -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home:home' %}">Home</a></li>
+            
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:mypage' user.id %}">마이페이지</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:logout' %}">로그아웃</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:login' %}">로그인</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'common:signup' %}">회원가입</a></li>
+                {% endif %}
+            </ul>
 
-<style>
-.marker-dot {
-    width: 24px;
-    height: 24px;
-    background-color: green;
-    border-radius: 50%;
-}
-</style>
+            <!-- Color mode -->
+            <div class="form-check form-switch form-switch-color-mode ms-lg-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="colorModeSwitch" />
+                <label class="form-check-label" for="colodeModeSwitch"></label>
+            </div>
+        </div>
+    </nav>
 
-<div class="container">
-    <div class="text-center mt-5">
-        <h1>선택한 출사 장소: {{ place_course }}</h1>
-        <h1>선택한 음식점: {{ restaurant.name }}</h1>
-    </div>
-</div>
+    <main class="flex-grow-1">
+        <!-- HEADER -->
+        <header data-jarallax data-speed=".8" style="background-image: url({% static 'assets/img/32.jpg' %})">
+            <div class="pt-8 pb-6 pt-md-10 pb-md-9 bg-black bg-opacity-50">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-8 col-lg-6 text-center">
+                            <!-- Heading -->
+                            <h1 class="display-6 fw-bold text-white">choose your food category</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: Arial, sans-serif;
+            }
+            
+            .button-container {
+                text-align: center;
+                margin-bottom: 300px;
+            }
+            
+            button {
+                padding: 15px 30px;
+                margin: 10px;
+                font-size: 16px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+            }
+            
+            .subheading {
+                margin-bottom: 100px;
+            }  
+            
+            .category-button {
+                background-color: #4CAF50;
+                color: white;
+            }
+            
+            .recommendation-button {
+                background-color: #008CBA;
+                color: white;
+            }
+            
+            .form-check input[type="checkbox"] {
+                display: none;
+            }
+            
+            .form-check label {
+                cursor: pointer;
+                padding: 8px 16px;
+                display: inline-block;
+                background: #888;
+                color: #fff;
+                font-family: sans-serif;
+                border-radius: 4px;
+                margin-bottom: 8px;
+                transition: background 0.2s ease;
+            }
+            
+            .form-check input[type="checkbox"]:checked + label {
+                background: #86d993;
+            }
+            
+            table th {
+                text-align: center;
+                padding: 30px;
+            }
+            
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: rgb(33, 135, 218);
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 70px;
+                cursor: pointer;
+                border-radius: 8px;
+            }
 
-<center>
-<div id="map" style="width:800px;height:500px;"></div>
+            .img-fluid {
+                max-width: 70%;
+                height: auto;
+            }
 
-<script>
-    var map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
-        zoom: 15
-    });
+            .marker-dot {
+                width: 24px;
+                height: 24px;
+                background-color: green;
+                border-radius: 50%;
+            }
 
-    var restaurantMarker = new naver.maps.Marker({
-        position: new naver.maps.LatLng({{ restaurant.latitude }}, {{ restaurant.longitude }}),
-        map: map,
-        title: '{{ restaurant.name }}',
-        icon: {
-            url: "{% static 'restaurant/img/icons8-spoon-and-fork-48.png' %}",
-            size: new naver.maps.Size(48, 48),  // 크기를 줄임
-            origin: new naver.maps.Point(0, 0),
-            anchor: new naver.maps.Point(24, 24)
-        }
-    });
 
-    var placeMarker = new naver.maps.Marker({
-        position: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
-        map: map,
-        title: '{{ place_course }}',
-        icon: {
-            url: "{% static 'restaurant/img/icons8-camera-50.png' %}",
-            size: new naver.maps.Size(50, 50),  // 크기를 줄임
-            origin: new naver.maps.Point(0, 0),
-            anchor: new naver.maps.Point(25, 25)
-        }
-    });
+            .mapButton {
+                display: block; /* 버튼을 블록 요소로 변환 */
+                width: fit-content; /* 글자 크기에 맞춰서 버튼 크기 조정 */
+                margin: 20px auto; /* 상하 20px 여백과 중앙 정렬 */
+                padding: 10px 20px; /* 버튼 패딩 조정 */
+                font-size: 16px; /* 글자 크기 조정 */
+            }
+            </style>
+            
 
-    var pathCoordinates = [
-        new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
-        new naver.maps.LatLng({{ restaurant.latitude }}, {{ restaurant.longitude }})
-    ];
+        <!-- food category -->
+        <center>
+        <section class="pt-8 pt-md-9">
+            <div class="container">
+                <div class="text-center mt-5">
+                    <h1>선택한 출사 장소: {{ place_course }}</h1>
+                    <h1>선택한 음식점: {{ restaurant.name }}</h1>
+                </div>
+            </div>
+            <br/>
+            
+      
+            <div id="map" style="width:800px;height:500px;"></div>
+            
+            <script>
+                var map = new naver.maps.Map('map', {
+                    center: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+                    zoom: 15
+                });
+            
+                var restaurantMarker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng({{ restaurant.latitude }}, {{ restaurant.longitude }}),
+                    map: map,
+                    title: '{{ restaurant.name }}',
+                    icon: {
+                        url: "{% static 'restaurant/img/icons8-spoon-and-fork-48.png' %}",
+                        size: new naver.maps.Size(48, 48),  // 크기를 줄임
+                        origin: new naver.maps.Point(0, 0),
+                        anchor: new naver.maps.Point(24, 24)
+                    }
+                });
+            
+                var placeMarker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+                    map: map,
+                    title: '{{ place_course }}',
+                    icon: {
+                        url: "{% static 'restaurant/img/icons8-camera-50.png' %}",
+                        size: new naver.maps.Size(50, 50),  // 크기를 줄임
+                        origin: new naver.maps.Point(0, 0),
+                        anchor: new naver.maps.Point(25, 25)
+                    }
+                });
+            
+                var pathCoordinates = [
+                    new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+                    new naver.maps.LatLng({{ restaurant.latitude }}, {{ restaurant.longitude }})
+                ];
+            
+                var polyline = new naver.maps.Polyline({
+                    map: map,
+                    path: pathCoordinates,
+                    strokeColor: '#ff0000',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 5,
+                    strokeStyle: 'dash',
+                    strokeDashArray: [1, 1]
+                });
+            
+                createButton('음식점 정보 확인하기', function() {
+                    var url = 'https://map.naver.com/p/search/' + '{{ restaurant.name }}';
+                    window.open(url, '_blank');
+                });
+            
+                createButton('자세한 경로 확인하기', function() {
+                    var checkbox = document.getElementById('reverseCheckbox');
+                    var s_lng, s_lat, s_text, e_lng, e_lat, e_text;
+            
+                    s_lng = {{ place_longitude }};
+                    s_lat = {{ place_latitude }};
+                    s_text = '{{ place_course }}';
+                    e_lng = {{ restaurant.longitude }};
+                    e_lat = {{ restaurant.latitude }};
+                    e_text = '{{ restaurant.name }}';
+            
+                    var url = 'http://map.naver.com/index.nhn?slng=' + s_lng + '&slat=' + s_lat + '&stext=' + s_text + '&elng=' + e_lng + '&elat=' + e_lat + '&pathType=0&showMap=true&etext=' + e_text + '&menu=route';
+                    window.open(url, '_blank');
+                });
+            
+                function createButton(text, onClick) {
+                    var button = document.createElement('button');
+                    button.className = 'mapButton btn btn-success';
+                    button.innerText = text;
+                    button.addEventListener('click', onClick);
 
-    var polyline = new naver.maps.Polyline({
-        map: map,
-        path: pathCoordinates,
-        strokeColor: '#ff0000',
-        strokeOpacity: 0.5,
-        strokeWeight: 5,
-        strokeStyle: 'dash',
-        strokeDashArray: [1, 1]
-    });
+                    var mapContainer = document.getElementById('map').parentNode;
+                    mapContainer.appendChild(button);
+                }
+            </script>
+        </center>
+    </main>
 
-    createButton('음식점 정보 확인하기', function() {
-        var url = 'https://map.naver.com/p/search/' + '{{ restaurant.name }}';
-        window.open(url, '_blank');
-    });
+    <!-- FOOTER -->
+    <footer class="py-7 py-md-9 bg-black mt-auto">
+        <div class="container px-4">
+            <div class="row gx-7">
+                <div class="col-sm-4">
+                    <!-- Heading -->
+                    <h5 class="text-xs text-primary">About Us</h5>
+                    <!-- Text -->
+                    <p class="mb-6">
+                        우리는 포핸즈, 소프트웨어 공학 설계에서 출발한 프로젝트 팀으로 2024 1학기 학습공동체의 스터디 팀으로 지원함.
+                    </p>
+                </div>
+                <div class="col-sm-4">
+                    <!-- Heading -->
+                    <h5 class="text-xs text-primary">Contact info</h5>
+                    <!-- List -->
+                    <ul class="list-unstyled mb-6">
+                        <li class="d-flex mb-2">
+                            <div class="fas fa-map-marker-alt me-3 mt-2 fs-sm"></div>
+                            서울특별시 동대문구 서울시립대로 163 <br>서울시립대학교 과학기술관
+                        </li>
+                        <li class="d-flex">
+                            <div class="far fa-envelope me-3 mt-2 fs-sm"></div>
+                            <a href="mailto:admin@domain.com">4handsgpt@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-12">
+                    <!-- Copyright -->
+                    <div class="d-flex align-items-center">
+                        <hr class="hr-sm me-3" style="height: 1px" />
+                        &copy; 2024 fourhands. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    createButton('자세한 경로 확인하기', function() {
-        var checkbox = document.getElementById('reverseCheckbox');
-        var s_lng, s_lat, s_text, e_lng, e_lat, e_text;
-
-        s_lng = {{ place_longitude }};
-        s_lat = {{ place_latitude }};
-        s_text = '{{ place_course }}';
-        e_lng = {{ restaurant.longitude }};
-        e_lat = {{ restaurant.latitude }};
-        e_text = '{{ restaurant.name }}';
-
-        var url = 'http://map.naver.com/index.nhn?slng=' + s_lng + '&slat=' + s_lat + '&stext=' + s_text + '&elng=' + e_lng + '&elat=' + e_lat + '&pathType=0&showMap=true&etext=' + e_text + '&menu=route';
-        window.open(url, '_blank');
-    });
-
-    function createButton(text, onClick) {
-        var button = document.createElement('button');
-        button.style.cssText = "position: relative; left: 40%; margin-right: 10px;";
-        button.className = 'mapButton';
-        button.innerText = text;
-        button.className = 'btn btn-success';
-        button.addEventListener('click', onClick);
-
-        document.body.appendChild(button);
-    }
-</script>
-</center>
-{% endblock %}
+    <!-- JAVASCRIPT -->
+    <!-- Vendor JS -->
+    <script src="{% static 'assets/js/vendor.bundle.js' %}"></script>
+    <!-- Theme JS -->
+    <script src="{% static 'assets/js/theme.bundle.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

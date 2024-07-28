@@ -92,7 +92,7 @@
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-8 col-lg-6 text-center">
                             <!-- Heading -->
-                            <h1 class="display-6 fw-bold text-white">choose your food category</h1>
+                            <h1 class="display-6 fw-bold text-white">choose your favorite <br><br> restaurant</h1>
                         </div>
                     </div>
                 </div>
@@ -204,22 +204,6 @@
                 font-size: 16px; /* 글자 크기 조정 */
             }
 
-            .order-container {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                background: rgba(255, 255, 255, 0.8);
-                padding: 10px;
-                border-radius: 5px;
-                z-index: 1000;
-            }
-
-            #map {
-                width: 1000px; /* Adjust width as needed */
-                height: 700px; /* Adjust height as needed */
-                position: relative; /* Ensure map position is relative */
-            }
-            
         </style>
 
         <!-- place category -->
@@ -232,16 +216,22 @@
                 </div>
             </div>
             
-            <div id="map">
-                <!-- 순서 변경 컨테이너 -->
-                <div class="order-container" id="orderContainer">
-                    출사 순서 정하기: <button id="orderButton" class="btn btn-primary">출사 -> 밥</button>
-                </div>
+            <div id="map" style="width:800px;height:500px;"></div>
+            
+            <!-- 체크박스 추가 -->
+            <ul class="form-check mt-6">
+                <li>
+                    <input class="form-check-input" type="checkbox" id="reverseCheckbox">
+                    <label class="form-check-label" for="reverseCheckbox">음식점 -> 출사지</label>
+                </li>
+            </ul>
+            
+            <!-- 이미지 -->
+            <div id="imageContainer">
+                <img id="cameraImage" src="{% static 'restaurant/img/camera.png' %}">
+                <img id="spoonImage" src="{% static 'restaurant/img/spoon.png' %}">
             </div>
-            
- 
-            
-  
+
             <!-- 버튼 컨테이너 추가 -->
             <div id="buttonContainer" class="button-container"></div>
 
@@ -328,10 +318,10 @@
                     drawDashedPath({ lat: parseFloat(restaurant.latitude), lng: parseFloat(restaurant.longitude) }, { lat: parseFloat('{{place_latitude}}'), lng: parseFloat('{{place_longitude}}') });
             
                     createButton('경로 확인하기', function() {
-                        var orderButton = document.getElementById('orderButton');
+                        var checkbox = document.getElementById('reverseCheckbox');
                         var s_lng, s_lat, s_text, e_lng, e_lat, e_text;
             
-                        if (orderButton.innerText === '밥 -> 출사') {
+                        if (checkbox.checked) {
                             s_lng = restaurant.longitude;
                             s_lat = restaurant.latitude;
                             s_text = restaurant.name;
@@ -401,15 +391,34 @@
                     });
                 }
             
-            
+                document.addEventListener('DOMContentLoaded', function() {
+                    var reverseCheckbox = document.getElementById('reverseCheckbox');
+                    var cameraImage = document.getElementById('cameraImage');
+                    var spoonImage = document.getElementById('spoonImage');
 
-                // 순서 변경 버튼 클릭 이벤트 처리
-                document.getElementById('orderButton').addEventListener('click', function() {
-                    var orderButton = document.getElementById('orderButton');
-                    if (orderButton.innerText === '출사 -> 밥') {
-                        orderButton.innerText = '밥 -> 출사';
+                    if (reverseCheckbox && cameraImage && spoonImage) {
+                        reverseCheckbox.addEventListener('change', function() {
+                            if (reverseCheckbox.checked) {
+                                // 체크박스가 체크되면 숟가락 이미지를 왼쪽에, 카메라 이미지를 오른쪽에 표시
+                                cameraImage.style.order = '2'; // cameraImage를 뒤로 보냄
+                                spoonImage.style.order = '1'; // spoonImage를 앞으로 가져옴
+                            } else {
+                                // 체크박스가 체크되지 않으면 카메라 이미지를 왼쪽에, 숟가락 이미지를 오른쪽에 표시
+                                cameraImage.style.order = '1'; // cameraImage를 앞으로 가져옴
+                                spoonImage.style.order = '2'; // spoonImage를 뒤로 보냄
+                            }
+                        });
+
+                        // 페이지 로드 시 초기 상태 반영
+                        if (reverseCheckbox.checked) {
+                            cameraImage.style.order = '2'; // cameraImage를 뒤로 보냄
+                            spoonImage.style.order = '1'; // spoonImage를 앞으로 가져옴
+                        } else {
+                            cameraImage.style.order = '1'; // cameraImage를 앞으로 가져옴
+                            spoonImage.style.order = '2'; // spoonImage를 뒤로 보냄
+                        }
                     } else {
-                        orderButton.innerText = '출사 -> 밥';
+                        console.error("One or more elements not found: reverseCheckbox, cameraImage, spoonImage");
                     }
                 });
 

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Restaurant Details{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{ naver_map_api_key }}"></script>
+
+<style>
+.marker-dot {
+    width: 24px;
+    height: 24px;
+    background-color: green;
+    border-radius: 50%;
+}
+</style>
+
+<div class="container">
+    <div class="text-center mt-5">
+        <h1>선택한 출사 장소: {{ place_course }}</h1>
+        <h1>선택한 음식점: {{ restaurant.name }}</h1>
+    </div>
+</div>
+
+<center>
+<div id="map" style="width:800px;height:500px;"></div>
+
+<script>
+    var map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+        zoom: 15
+    });
+
+    var restaurantMarker = new naver.maps.Marker({
+        position: new naver.maps.LatLng({{ restaurant.latitude }}, {{ restaurant.longitude }}),
+        map: map,
+        title: '{{ restaurant.name }}',
+        icon: {
+            url: "{% static 'restaurant/img/icons8-spoon-and-fork-48.png' %}",
+            size: new naver.maps.Size(48, 48),  // 크기를 줄임
+            origin: new naver.maps.Point(0, 0),
+            anchor: new naver.maps.Point(24, 24)
+        }
+    });
+
+    var placeMarker = new naver.maps.Marker({
+        position: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+        map: map,
+        title: '{{ place_course }}',
+        icon: {
+            url: "{% static 'restaurant/img/icons8-camera-50.png' %}",
+            size: new naver.maps.Size(50, 50),  // 크기를 줄임
+            origin: new naver.maps.Point(0, 0),
+            anchor: new naver.maps.Point(25, 25)
+        }
+    });
+
+    var pathCoordinates = [
+        new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+        new naver.maps.LatLng({{ restaurant.latitude }}, {{ restaurant.longitude }})
+    ];
+
+    var polyline = new naver.maps.Polyline({
+        map: map,
+        path: pathCoordinates,
+        strokeColor: '#ff0000',
+        strokeOpacity: 0.5,
+        strokeWeight: 5,
+        strokeStyle: 'dash',
+        strokeDashArray: [1, 1]
+    });
+
+    createButton('음식점 정보 확인하기', function() {
+        var url = 'https://map.naver.com/p/search/' + '{{ restaurant.name }}';
+        window.open(url, '_blank');
+    });
+
+    createButton('자세한 경로 확인하기', function() {
+        var checkbox = document.getElementById('reverseCheckbox');
+        var s_lng, s_lat, s_text, e_lng, e_lat, e_text;
+
+        s_lng = {{ place_longitude }};
+        s_lat = {{ place_latitude }};
+        s_text = '{{ place_course }}';
+        e_lng = {{ restaurant.longitude }};
+        e_lat = {{ restaurant.latitude }};
+        e_text = '{{ restaurant.name }}';
+
+        var url = 'http://map.naver.com/index.nhn?slng=' + s_lng + '&slat=' + s_lat + '&stext=' + s_text + '&elng=' + e_lng + '&elat=' + e_lat + '&pathType=0&showMap=true&etext=' + e_text + '&menu=route';
+        window.open(url, '_blank');
+    });
+
+    function createButton(text, onClick) {
+        var button = document.createElement('button');
+        button.style.cssText = "position: relative; left: 40%; margin-right: 10px;";
+        button.className = 'mapButton';
+        button.innerText = text;
+        button.className = 'btn btn-success';
+        button.addEventListener('click', onClick);
+
+        document.body.appendChild(button);
+    }
+</script>
+</center>
+{% endblock %}

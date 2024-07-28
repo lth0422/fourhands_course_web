@@ -92,7 +92,7 @@
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-8 col-lg-6 text-center">
                             <!-- Heading -->
-                            <h1 class="display-6 fw-bold text-white">choose your food category</h1>
+                            <h1 class="display-6 fw-bold text-white">choose your favorite <br><br> restaurant</h1>
                         </div>
                     </div>
                 </div>
@@ -204,22 +204,30 @@
                 font-size: 16px; /* 글자 크기 조정 */
             }
 
-            .order-container {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                background: rgba(255, 255, 255, 0.8);
-                padding: 10px;
-                border-radius: 5px;
-                z-index: 1000;
+            .map-container {
+                position: relative;
+                width: 100%;
+                height: 600px; /* Adjust height as needed */
             }
 
             #map {
-                width: 1000px; /* Adjust width as needed */
-                height: 700px; /* Adjust height as needed */
-                position: relative; /* Ensure map position is relative */
+                width: 1000px;
+                height: 700px;
             }
-            
+
+            #orderButton {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                z-index: 1;
+                background-color: #008CBA;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
         </style>
 
         <!-- place category -->
@@ -232,16 +240,12 @@
                 </div>
             </div>
             
-            <div id="map">
-                <!-- 순서 변경 컨테이너 -->
-                <div class="order-container" id="orderContainer">
-                    출사 순서 정하기: <button id="orderButton" class="btn btn-primary">출사 -> 밥</button>
-                </div>
+            <div class="map-container">
+                <div id="map"></div>
+                <button id="orderButton">출사 -> 밥</button>
             </div>
-            
- 
-            
-  
+
+
             <!-- 버튼 컨테이너 추가 -->
             <div id="buttonContainer" class="button-container"></div>
 
@@ -401,9 +405,6 @@
                     });
                 }
             
-            
-
-                // 순서 변경 버튼 클릭 이벤트 처리
                 document.getElementById('orderButton').addEventListener('click', function() {
                     var orderButton = document.getElementById('orderButton');
                     if (orderButton.innerText === '출사 -> 밥') {
@@ -412,6 +413,8 @@
                         orderButton.innerText = '출사 -> 밥';
                     }
                 });
+
+    
 
             </script>
         </center>

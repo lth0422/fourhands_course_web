@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{ naver_map_api_key }}"></script>
+
+<style>
+.marker-dot {
+    width: 24px;
+    height: 24px;
+    background-color: green;
+    border-radius: 50%;
+}
+
+/* 스타일 체크박스 */
+.form-check input[type="checkbox"] {
+    display: none;
+}
+
+.form-check label {
+    cursor: pointer;
+    padding: 8px 16px;
+    display: inline-block;
+    background: #888;
+    color: #fff;
+    font-family: sans-serif;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    transition: background 0.2s ease;
+}
+
+.form-check input[type="checkbox"]:checked + label {
+    background: #86d993;
+}
+
+/* 리스트 스타일 제거 추가 CSS */
+ul.form-check {
+    list-style-type: none;
+    padding: 20px;
+    position: absolute; /* 절대 위치 지정 */
+    top: 200px; /* 위에서 20px만큼 떨어진 위치 */
+    left: 350px; /* 왼쪽에서 20px만큼 떨어진 위치 */
+}
+
+ul.form-check li {
+    margin-bottom: 20px;
+}
+
+#confirmButton {
+    font-size: 20px; /* 필요에 따라 글꼴 크기 조정 */
+}
+
+#confirmButton:disabled {
+    display: none;
+}
+
+#confirmButtonContainer {
+    position: fixed;
+    bottom: 50%;
+    right: 200px;
+    transform: translateX(50%);
+}
+
+/* 이미지 컨테이너 스타일 수정 */
+#imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 이미지를 수직 가운데 정렬 */
+    margin-top: 20px; /* 필요에 따라 여백 조정 */
+}
+
+#cameraImage, #spoonImage {
+    width: 300px;
+    height: 300px;
+    margin: 10px; /* 이미지 사이의 간격 설정 */
+}
+</style>
+
+<div class="container">
+    <div class="text-center mt-5">
+        <h1>선택된 음식 카테고리: {{ selected_category }}</h1>
+        <p class="lead">맛집 지도</p>
+    </div>
+</div>
+
+<center>
+<div id="map" style="width:800px;height:500px;"></div>
+
+<!-- 체크박스 추가 -->
+<ul class="form-check">
+    <li>
+        <input class="form-check-input" type="checkbox" id="reverseCheckbox">
+        <label class="form-check-label" for="reverseCheckbox">밥 먼저 먹을래요</label>
+    </li>
+</ul>
+
+<!-- 이미지 -->
+<div id="imageContainer">
+    <img id="cameraImage" src="{% static 'restaurant/img/camera.png' %}">
+    <img id="spoonImage" src="{% static 'restaurant/img/spoon.png' %}">
+</div>
+
+<script>
+    var map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+        zoom: 15
+    });
+
+    var selectedMarkerInfo = null;
+    var polyline = null;
+
+    {% for restaurant in restaurants %}
+        var marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng({{ restaurant.latitude }}, {{ restaurant.longitude }}),
+            map: map,
+            title: '{{ restaurant.name }}'
+        });
+
+        var infoWindow = new naver.maps.InfoWindow({
+            content: '<div>{{ restaurant.name }} - {{ restaurant.addr }}</div>'
+        });
+
+        (function(marker, infoWindow, restaurant) {
+            naver.maps.Event.addListener(marker, 'click', function() {
+                if (selectedMarkerInfo) {
+                    selectedMarkerInfo.infoWindow.close();
+                    selectedMarkerInfo.buttons.forEach(function(button) {
+                        button.parentNode.removeChild(button);
+                    });
+                    selectedMarkerInfo = null;
+                }
+
+                infoWindow.open(map, marker);
+                createButtons(restaurant);
+            });
+        })(marker, infoWindow, {{ restaurant|safe }});
+
+        var placeMarker = new naver.maps.Marker({
+            position: new naver.maps.LatLng({{ place_latitude }}, {{ place_longitude }}),
+            map: map,
+            title: '{{ place_course }}',
+            icon: {
+                content: '<div class="marker-dot"></div>',
+                anchor: new naver.maps.Point(12, 12),
+            }
+        });
+
+        (function (placeMarker) {
+            naver.maps.Event.addListener(placeMarker, 'click', function () {
+                var infoContent = '<div class="info-window">' +
+                                  '    <p>선택한 나들이 장소</p>' +
+                                  '    <h3>{{ place_course }}</h3>' +
+                                  '</div>';
+
+                if (selectedMarkerInfo) {
+                    selectedMarkerInfo.infoWindow.close();
+                }
+
+                var infoWindow = new naver.maps.InfoWindow({
+                    content: infoContent,
+                    backgroundColor: 'white',
+                    borderColor: 'green',
+                });
+
+                infoWindow.open(map, placeMarker);
+            });
+        })(placeMarker);
+
+    {% endfor %}
+
+    function createButtons(restaurant) {
+        var existingButtons = document.querySelectorAll('.mapButton');
+        existingButtons.forEach(function(button) {
+            button.parentNode.removeChild(button);
+        });
+
+        createButton('추가 정보 확인하기', function() {
+            var url = 'https://map.naver.com/p/search/' + restaurant.name;
+            window.open(url, '_blank');
+        });
+
+        // 지도에 점선 경로 그리기
+        drawDashedPath({ lat: parseFloat(restaurant.latitude), lng: parseFloat(restaurant.longitude) }, { lat: parseFloat('{{place_latitude}}'), lng: parseFloat('{{place_longitude}}') });
+
+        createButton('경로 확인하기', function() {
+            var checkbox = document.getElementById('reverseCheckbox');
+            var s_lng, s_lat, s_text, e_lng, e_lat, e_text;
+
+            if (checkbox.checked) {
+                s_lng = restaurant.longitude;
+                s_lat = restaurant.latitude;
+                s_text = restaurant.name;
+                e_lng = '{{place_longitude}}';
+                e_lat = '{{place_latitude}}';
+                e_text = '{{place_course}}';
+            } else {
+                s_lng = '{{place_longitude}}';
+                s_lat = '{{place_latitude}}';
+                s_text = '{{place_course}}';
+                e_lng = restaurant.longitude;
+                e_lat = restaurant.latitude;
+                e_text = restaurant.name;
+            }
+
+            var url = 'http://map.naver.com/index.nhn?slng=' + s_lng + '&slat=' + s_lat + '&stext=' + s_text + '&elng=' + e_lng + '&elat=' + e_lat + '&pathType=0&showMap=true&etext=' + e_text + '&menu=route';
+            window.open(url, '_blank');
+
+        });
+
+         {% if user.is_authenticated %}
+        createButton('저장', function() {
+            var url = "{% url 'restaurant:save_restaurant' 0 %}".replace(0, restaurant.id);
+            window.location.href = url;
+        });
+        {% endif %}
+    }
+
+    function createButton(text, onClick) {
+        var button = document.createElement('button');
+        button.style.cssText = "position: relative; left: 40%; margin-right: 10px;";
+        button.className = 'mapButton';
+        button.innerText = text;
+        button.className = 'btn btn-success';
+        button.addEventListener('click', onClick);
+
+        document.body.appendChild(button);
+
+        if (!selectedMarkerInfo) {
+            selectedMarkerInfo = {
+                buttons: [button],
+                infoWindow: infoWindow
+            };
+        } else {
+            selectedMarkerInfo.buttons.push(button);
+        }
+    }
+
+    function drawDashedPath(startPoint, endPoint) {
+        if (polyline) {
+            polyline.setMap(null);
+        }
+
+        var pathCoordinates = [
+            new naver.maps.LatLng(startPoint.lat, startPoint.lng),
+            new naver.maps.LatLng(endPoint.lat, endPoint.lng)
+        ];
+
+        polyline = new naver.maps.Polyline({
+            map: map,
+            path: pathCoordinates,
+            strokeColor: '#ff0000', // 점선의 색상
+            strokeOpacity: 0.5, // 점선의 투명도
+            strokeWeight: 5, // 점선의 두께
+            strokeStyle: 'dash', // 점선으로 설정
+            strokeDashArray: [1, 1] // 점선의 간격 설정
+        });
+    }
+
+    // JavaScript로 이미지 위치 조정
+    document.addEventListener('DOMContentLoaded', function() {
+        var reverseCheckbox = document.getElementById('reverseCheckbox');
+        var cameraImage = document.getElementById('cameraImage');
+        var spoonImage = document.getElementById('spoonImage');
+
+        reverseCheckbox.addEventListener('change', function() {
+            if (reverseCheckbox.checked) {
+                // 체크박스가 체크되면 숟가락 이미지를 왼쪽에, 카메라 이미지를 오른쪽에 표시
+                cameraImage.style.order = '2'; // cameraImage를 뒤로 보냄
+                spoonImage.style.order = '1'; // spoonImage를 앞으로 가져옴
+            } else {
+                // 체크박스가 체크되지 않으면 카메라 이미지를 왼쪽에, 숟가락 이미지를 오른쪽에 표시
+                cameraImage.style.order = '1'; // cameraImage를 앞으로 가져옴
+                spoonImage.style.order = '2'; // spoonImage를 뒤로 보냄
+            }
+        });
+
+        // 페이지 로드 시 초기 상태 반영
+        if (reverseCheckbox.checked) {
+            cameraImage.style.order = '2'; // cameraImage를 뒤로 보냄
+            spoonImage.style.order = '1'; // spoonImage를 앞으로 가져옴
+        } else {
+            cameraImage.style.order = '1'; // cameraImage를 앞으로 가져옴
+            spoonImage.style.order = '2'; // spoonImage를 뒤로 보냄
+        }
+    });
+</script>
+</center>
+{% endblock %}
