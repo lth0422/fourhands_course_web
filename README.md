@@ -8,7 +8,7 @@
 
 또한, 추천받은 맛집 정보를 마이페이지에 저장해 자신만의 출사 코스를 완성해보세요!
 
-## Table of Contents
+## 🗒 Table of Contents
 - [About the Project](#about-the-project)
 - [Features](#-features)
 - [Demo Results](#-demo-results)
