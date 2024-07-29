@@ -86,13 +86,13 @@
 
     <main class="flex-grow-1">
         <!-- HEADER -->
-        <header data-jarallax data-speed=".8" style="background-image: url({% static 'assets/img/32.jpg' %})">
+        <header data-jarallax data-speed=".8" style="background-image: url({% static 'assets/img/35.jpg' %})">
             <div class="pt-8 pb-6 pt-md-10 pb-md-9 bg-black bg-opacity-50">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-8 col-lg-6 text-center">
                             <!-- Heading -->
-                            <h1 class="display-6 fw-bold text-white">choose your food category</h1>
+                            <h1 class="display-6 fw-bold text-white">choose your favorite <br><br>restaurant</h1>
                         </div>
                     </div>
                 </div>
@@ -358,6 +358,13 @@
                         window.location.href = url;
                     });
                     {% endif %}
+
+                    createButton('코스 선택을 마치기', function() {
+                        var url = "{% url 'home:home' %}" 
+                        window.location.href = url;
+                       
+                    });
+                    
                 }
             
                 function createButton(text, onClick) {
